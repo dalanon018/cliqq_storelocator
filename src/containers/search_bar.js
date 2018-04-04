@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { fetchStores } from '../actions/index'
+import { getSearchTerm } from '../actions/getSearchTerm'
 class SearchBar extends Component {
     constructor(props) {
         super(props);
@@ -16,11 +17,12 @@ class SearchBar extends Component {
         event.preventDefault(); //prevent default submit form
 
         this.props.fetchStores(this.state.term);
-        this.setState({'term': ''});
+        this.props.getSearchTerm(this.state.term);
+        // this.setState({'term': ''});
     }
 
     onInputChange(event){
-        console.log("The term is : ", event.target.value);
+        // console.log("The term is : ", event.target.value);
         this.setState({term: event.target.value});
     }
 
@@ -61,7 +63,9 @@ class SearchBar extends Component {
 }
 
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({fetchStores}, dispatch);
+    return {
+        ...bindActionCreators({fetchStores, getSearchTerm}, dispatch)
+    }
 }
 
 export default connect(null, mapDispatchToProps)(SearchBar);

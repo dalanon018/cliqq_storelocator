@@ -4,9 +4,15 @@ import { connect } from 'react-redux';
 
 class StoreList extends Component {
 
+    componentDidUpdate(prevProps, prevState) {
+        if(prevProps.storeList !== this.props.storeList){
+            this.render();
+        }
+    }
+
     renderStore(storeData){
 
-        console.log("storeData : " , storeData);
+        // console.log("storeData : " , storeData);
 
         return (
             storeData.map( individualStoreData =>
@@ -39,27 +45,44 @@ class StoreList extends Component {
     }
 
     render() {
-        const storeLocations = (storeData => {
-            return storeData
-        })
-        return (
-            <div className="storeList pt-4 pl-5 pr-5">
-                <h3>Store list</h3>
-                <div>
-                    <ul className="list-group">
-                        { this.props.storeList.map( (storeData,idx) =>
-                            this.renderStore(storeData)
-                        )}
-                    </ul>
+        console.log("StoreList: " , this.props.storeList.length);
+        console.log("searchTerm: " , this.props.searchTerm.length);
+        if(this.props.searchTerm.length >= 1 && this.props.storeList.length <= 1) {
+            console.log("no store found!");
+            return (
+                <div className="pt-2 pl-5 pr-5">
+                    <h4>No Store Found</h4>
                 </div>
-            </div>
+            )
+        }
 
+        if(this.props.storeList[0].length >= 2){
+            return (
+                <div className="pt-2 pl-5 pr-5">
+                    <h4>Store List</h4>
+                    <div>
+                        <ul className="list-group storeList">
+                            { this.props.storeList.map( (storeData,idx) =>
+                                this.renderStore(storeData)
+                            )}
+                        </ul>
+                    </div>
+                </div>
+            )
+        }
+
+        return (
+            <div className="pt-2 pl-5 pr-5">
+
+            </div>
         )
     }
 }
 
-function mapStateToProps({ storeList }) {
-    return { storeList } //es6 magic storeList:storeList
+function mapStateToProps({ storeList, searchTerm }) {
+    console.log("searchTerm present? :", searchTerm)
+    console.log("storeList present? :", storeList)
+    return { storeList, searchTerm } //es6 magic storeList:storeList
 }
 
 export default connect(mapStateToProps)(StoreList);
