@@ -9,7 +9,7 @@ export function fetchStores(searchTerm){
     const storeListURL =`${STORE_LIST_URL}?location=${searchTerm}`;
     console.log("Complete URL is : ", storeListURL);
     const fetchStoreForm = {
-        location: searchTerm
+        term: searchTerm
     }
 
     const config = { headers: { 'Content-Type': 'multipart/form-data' }}
@@ -19,11 +19,10 @@ export function fetchStores(searchTerm){
 
     return {
         type: FETCH_STORE,
-        payload: request
+        payload: request,
     }
 
 }
-
 
 function generateFetchStoreFormData(searchTerm){
     let bodyFormData = new FormData();
