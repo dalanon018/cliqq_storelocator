@@ -116,7 +116,7 @@
 }
 
 .storeList{
-    height: 30vh;
+    max-height: 36vh;
     overflow-y: scroll;
 }
 
