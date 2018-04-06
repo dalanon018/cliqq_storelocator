@@ -120,6 +120,16 @@
     overflow-y: scroll;
 }
 
+.btn-success.active, .btn-success:active, .btn-success:hover {
+    background-color: #419641;
+    border-color: #3e8f3e;
+}
+
+.btn-success {
+    background: #078162;
+    border: 0px;
+}
+
 @media (min-width: 992px) {
     .sidebar {
       width: 33.3333%;
