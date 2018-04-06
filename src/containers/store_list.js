@@ -63,9 +63,10 @@ class StoreList extends Component {
     render() {
         console.log("StoreList: " , this.props.storeList);
         console.log("searchTerm: " , this.props.searchTerm);
-        let stores = [];
-        if(this.props.storeList && this.props.storeList["0"]){
-            stores = this.props.storeList["0"].map( storeData => {
+        let storeProps = this.props.storeList["0"] || [];
+        let stores = []
+        if(this.props.storeList && storeProps.length){
+            stores = storeProps.map( storeData => {
                 return storeData;
             })
         }
