@@ -5,7 +5,8 @@ import defaultStoreIcon from '../store_locator_marker.png';
 class Map extends Component {
 
     state = {
-        markers: []
+        markers: [],
+        defaultZoom: 14
     }
 
 
@@ -16,6 +17,9 @@ class Map extends Component {
         if(prevProps.storeList !== this.props.storeList){
             this.updateMap();
         }
+        if(prevProps.zoomToStore !== this.props.zoomToStore){
+            this.centerOnMarker();
+        }
     }
 
     componentDidMount() {
@@ -23,9 +27,33 @@ class Map extends Component {
     }
 
     updateMap(){
+        this.map.setZoom(this.state.defaultZoom)
         this.clearMarkers();
         if(this.props && this.props.google){
             this.generateMarkers();
+        }
+    }
+
+    centerOnMarker(){
+        console.log("centering on selected marker: ", this.props.zoomToStore)
+        if(this.props.zoomToStore){
+
+            console.log("current markers are: ", this.state.markers);
+            const storeId = this.props.zoomToStore["0"]
+            const selectedMarker = this.state.markers.filter(marker => {
+                if(marker.get("store_id") === storeId){
+                    console.log("marker found: ", marker)
+                }
+                return marker.get("store_id") === storeId
+            })
+            if(selectedMarker.length){
+                console.log("selectedMarker position: ", selectedMarker["0"].getPosition())
+                this.map.panTo(selectedMarker["0"].getPosition());
+                this.map.setZoom(19);
+                console.log("selectedMarker is: ", selectedMarker)
+            } else {
+                console.log("no zoomToStore");
+            }
         }
     }
 
@@ -41,12 +69,11 @@ class Map extends Component {
                         map: this.map,
                         title: location.STORE_NAME,
                         icon: defaultStoreIcon,
-                        animation: google.maps.Animation.DROP
+                        animation: google.maps.Animation.DROP,
+                        store_id: location.STORE_NUM
                     });
                     currentMarkers.push(marker);
                 }, 1500)
-
-
             });
         });
         this.setState({ markers: currentMarkers });
@@ -71,13 +98,12 @@ class Map extends Component {
             const mapRef = this.refs.map;
             const node = ReactDOM.findDOMNode(mapRef);
 
-            let zoom = 14;
             let defaultLng = 121.015;
             let defaultLat = 14.57;
             const center = new maps.LatLng(defaultLat, defaultLng);
             const mapConfig = Object.assign({}, {
                 center: center,
-                zoom: zoom,
+                zoom: this.state.defaultZoom,
                 gestureHandling: 'cooperative'
             })
 
@@ -102,9 +128,10 @@ class Map extends Component {
     }
 };
 
-function mapStateToProps({ storeList }) {
+function mapStateToProps({ storeList, zoomToStore }) {
     console.log("mapStateToProps for MAP component: ", storeList);
-    return { storeList } //es6 magic storeList:storeList
+    console.log("mapStateToProps for MAP component - zoomToStore: ", zoomToStore);
+    return { storeList, zoomToStore } //es6 magic storeList:storeList
 }
 
 export default connect(mapStateToProps)(Map)
