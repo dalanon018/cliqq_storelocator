@@ -3,13 +3,15 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 50px;
+  /* animation: App-logo-spin infinite 20s linear; */
+  /* height: 50px; */
+  width:140px; 
+  height:47px;
 }
 
 .App-header {
   background-color: #222;
-  height: 80px;
+  min-height: 50px;
   padding: 4px;
   color: white;
 }
@@ -32,6 +34,10 @@
 }
 
 .map {
+    display: none;
+}
+
+.clean {
     display: none;
 }
 
@@ -128,6 +134,10 @@
 .btn-success {
     background: #078162;
     border: 0px;
+}
+
+.navbar-pale {
+  background: #E7E7E7;
 }
 
 @media (min-width: 992px) {

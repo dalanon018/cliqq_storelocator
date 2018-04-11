@@ -5,7 +5,8 @@ import StoreZoomReducer from './reducer_store_zoom';
 const rootReducer = combineReducers({
     storeList: StoreReducer,
     searchTerm: SearchTermReducer,
-    zoomToStore: StoreZoomReducer
+    zoomToStore: StoreZoomReducer,
+    currentLocation: StoreReducer
 })
 
 export default rootReducer;
