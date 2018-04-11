@@ -25,26 +25,26 @@ class StoreList extends Component {
 
     renderStore(storeData){
 
-        // console.log("storeData : " , storeData);
+        console.log("storeData : " , storeData);
 
         return (
-            storeData.map( individualStoreData =>
-                <li className="list-group-item" key={individualStoreData.STORE_NUM} onClick={ () => this.zoomToStore(individualStoreData) } >
-                    <div key={ individualStoreData.STORE_NUM } className="row">
-                        <div className="col-2">#{individualStoreData.STORE_NUM}</div>
-                        <div className="col-10">
-                            <b>{individualStoreData.STORE_NAME}</b>
-                            <br/>
-                            <span className="text-left">
-                                <p>{individualStoreData.ADDRESS}</p>
-                                <p>{individualStoreData.REGION_NAME}</p>
-                            </span>
-                            {/* <p>{individualStoreData.CITY}</p> */}
+            
+            <li className="list-group-item" key={storeData.STORE_NUM} onClick={ () => this.zoomToStore(storeData) } >
+                <div key={ storeData.STORE_NUM } className="row">
+                    <div className="col-2">#{storeData.STORE_NUM}</div>
+                    <div className="col-10">
+                        <b>{storeData.STORE_NAME}</b>
+                        <br/>
+                        <span className="text-left">
+                            <p>{storeData.ADDRESS}</p>
+                            <p>{storeData.REGION_NAME}</p>
+                        </span>
+                        {/* <p>{individualStoreData.CITY}</p> */}
 
-                        </div>
                     </div>
-                </li>
-            )
+                </div>
+            </li>
+            
             // <li key={individualStoreData.STORE_NUM} >
             //     <div key={ individualStoreData.STORE_NUM } className="row">
             //         <div className="col-1">{individualStoreData.STORE_NUM}</div>
@@ -73,22 +73,24 @@ class StoreList extends Component {
 
         console.log("Stores! : ", stores);
 
-        if(!stores.length && this.props.searchTerm && this.props.searchTerm.length > 0) {
+        if(!stores.length && this.props.storeList["1"]) {
             console.log("no store found!");
+            console.log("this.props.storeList.status : ", this.props.storeList.status)
+            
             return (
                 <div className="pt-2 pl-5 pr-5">
-                    <h4>No Store Found</h4>
+                    <h4>No Stores Found.</h4>
                 </div>
             )
         }
 
-        if(stores.length && this.props.searchTerm.length){
+        if(stores.length){
             return (
                 <div className="pt-2 pl-5 pr-5">
                     <h4>Store List</h4>
                     <div>
                         <ul className="list-group storeList">
-                            { this.props.storeList.map( (storeData,idx) =>
+                            { stores.map( (storeData,idx) =>
                                 this.renderStore(storeData)
                             )}
                         </ul>
@@ -109,10 +111,10 @@ function mapDispatchToProps(dispatch){
     return bindActionCreators({zoomToStore}, dispatch)
 }
 
-function mapStateToProps({ storeList, searchTerm }) {
-    console.log("searchTerm present? :", searchTerm)
+function mapStateToProps({ storeList }) {
+    // console.log("searchTerm present? :", searchTerm)
     console.log("storeList present? :", storeList)
-    return { storeList, searchTerm } //es6 magic storeList:storeList
+    return { storeList } //es6 magic storeList:storeList
 }
 
 
