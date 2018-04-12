@@ -31,7 +31,9 @@ class StoreList extends Component {
             
             <li className="list-group-item" key={storeData.STORE_NUM} onClick={ () => this.zoomToStore(storeData) } >
                 <div key={ storeData.STORE_NUM } className="row">
-                    <div className="col-2">#{storeData.STORE_NUM}</div>
+                    <div className="col-2">
+                        <span className="store-number"> {storeData.STORE_NUM} </span>
+                    </div>
                     <div className="col-10">
                         <b>{storeData.STORE_NAME}</b>
                         <br/>

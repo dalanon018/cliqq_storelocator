@@ -188,7 +188,7 @@ class Map extends Component {
 		};
 
 		return (
-			<div ref="map" style={style}>
+			<div ref="map" className="mapDimensions">
 				Loading map...
 			</div>
 		);

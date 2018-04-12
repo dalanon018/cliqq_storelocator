@@ -101,7 +101,7 @@ class SearchBar extends Component {
 		const isEnabled = !Object.keys(errors).some( x => errors[x]);
 		
 		return (
-			<div className="main_search pt-4 pl-5 pr-5 pb-2">
+			<div className="main_search">
 				<div className="row clearfix">
 					<div className="mx-auto">
 						<h3>Find a 7-Eleven Store</h3>
