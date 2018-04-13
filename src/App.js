@@ -17,16 +17,20 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p> */}
 				<div className="row no-gutters">
-					<div className="sidebar">
+					<div className="col-md-3 col-xs-12">
 						<div className="order-1">
 							<SearchBar />
 						</div>
-						<div className="order-xs-3">
+						
+						<div className="d-none d-sm-block">
 							<StoreList />
 						</div>
 					</div>
-					<div className="map order-md-12">
+					<div className="col-md-9 col-xs-12 order-xs-2">
 						<MapContainer />
+					</div>
+					<div className="d-block d-sm-none order-xs-3">
+						<StoreList />
 					</div>
 				</div>
 			</div>

@@ -29,12 +29,12 @@ class StoreList extends Component {
 
         return (
             
-            <li className="list-group-item" key={storeData.STORE_NUM} onClick={ () => this.zoomToStore(storeData) } >
+            <li className="list-group-item list-group-item-action waves-effect" data-toggle="list" key={storeData.STORE_NUM} onClick={ () => this.zoomToStore(storeData) } >
                 <div key={ storeData.STORE_NUM } className="row">
-                    <div className="col-2">
+                    <div className="col-4">
                         <span className="store-number"> {storeData.STORE_NUM} </span>
                     </div>
-                    <div className="col-10">
+                    <div className="col-8">
                         <b>{storeData.STORE_NAME}</b>
                         <br/>
                         <span className="text-left">
@@ -80,7 +80,7 @@ class StoreList extends Component {
             console.log("this.props.storeList.status : ", this.props.storeList.status)
             
             return (
-                <div className="pt-2 pl-5 pr-5">
+                <div className="store_list_container">
                     <h4>No Stores Found.</h4>
                 </div>
             )
@@ -88,8 +88,8 @@ class StoreList extends Component {
 
         if(stores.length){
             return (
-                <div className="pt-2 pl-5 pr-5">
-                    <h4>Store List</h4>
+                <div className="store_list_container">
+                    <h4 className="h4">Stores near <b>{this.props.storeList["1"] ? this.props.storeList["1"]: "Your Location" }</b></h4>
                     <div>
                         <ul className="list-group storeList">
                             { stores.map( (storeData,idx) =>
@@ -102,7 +102,7 @@ class StoreList extends Component {
         }
 
         return (
-            <div className="pt-2 pl-5 pr-5">
+            <div className="store_list_container">
 
             </div>
         )

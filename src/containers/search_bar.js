@@ -12,6 +12,7 @@ class SearchBar extends Component {
 			touched: {
 				term: false,
 			},
+			getStoresOnCurrentLocationButtonClicked: false
         };
 
 		this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -22,7 +23,8 @@ class SearchBar extends Component {
     
 	componentDidUpdate(prevProps, prevState) {
 		if(prevProps.currentLocation !== this.props.currentLocation){
-			this.setState({ locationText: "Location Found" });
+			if(this.state.getStoresOnCurrentLocationButtonClicked)
+				this.setState({ locationText: "Location Found" });
 		}
 	}
 
@@ -42,7 +44,7 @@ class SearchBar extends Component {
     getStoresOnCurrentLocation(){
         //send action to retrieve stores near user location
         console.log("Send get stores around location action...");
-		
+		this.setState({ getStoresOnCurrentLocationButtonClicked : true });
 		if(navigator.geolocation){
 			navigator.geolocation.getCurrentPosition(
 				(pos) => {

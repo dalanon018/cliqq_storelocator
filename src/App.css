@@ -39,8 +39,8 @@
 }
 
 .mapDimensions {
-  width: 65vw;
-  height: 89vh
+  width: 100%;
+  height: 90vh
 }
 
 .clean {
@@ -55,6 +55,12 @@
   padding-bottom:0.4rem;
   padding-right: 2.5rem;
   padding-left: 2.5rem
+}
+
+.store_list_container {
+  padding-top: 0.4rem;
+  padding-right: 1.5rem;
+  padding-left: 1.5rem
 }
 
 /* {
@@ -198,8 +204,8 @@
 
   .mapDimensions{
     display:block;
-    max-height: 46vh;
-    width: 95vw;
+    max-height: 60vh;
+    width: 100%;
     
   }
 }
