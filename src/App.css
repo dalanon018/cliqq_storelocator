@@ -1,3 +1,11 @@
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+}
+
+
 .App {
   text-align: center;
 }
@@ -5,7 +13,7 @@
 .App-logo {
   /* animation: App-logo-spin infinite 20s linear; */
   /* height: 50px; */
-  width:140px; 
+  width:140px;
   height:47px;
 }
 
@@ -51,7 +59,7 @@
 /* CSS used here will be applied after bootstrap.css */
 .main_search {
   background-color:white;
-  padding-top: 2rem;
+  padding-top: 0.4rem;
   padding-bottom:0.4rem;
   padding-right: 2.5rem;
   padding-left: 2.5rem
@@ -206,6 +214,6 @@
     display:block;
     max-height: 60vh;
     width: 100%;
-    
+
   }
 }

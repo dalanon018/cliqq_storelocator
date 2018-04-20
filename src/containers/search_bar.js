@@ -6,7 +6,7 @@ import { getSearchTerm } from '../actions/getSearchTerm';
 class SearchBar extends Component {
 	constructor(props) {
 		super(props);
-        this.state = { 
+        this.state = {
 			term: '',
 			locationText: "Use My Location",
 			touched: {
@@ -20,7 +20,7 @@ class SearchBar extends Component {
 		this.getStoresOnCurrentLocation = this.getStoresOnCurrentLocation.bind(this);
 		// this.handleBlur = this.handleBlur.bind(this);
     }
-    
+
 	componentDidUpdate(prevProps, prevState) {
 		if(prevProps.currentLocation !== this.props.currentLocation){
 			if(this.state.getStoresOnCurrentLocationButtonClicked)
@@ -50,7 +50,7 @@ class SearchBar extends Component {
 				(pos) => {
 					const geoCoords = pos.coords;
 					console.log(geoCoords);
-					this.props.getStoresOnCurrentLocation(geoCoords);	
+					this.props.getStoresOnCurrentLocation(geoCoords);
 				},
 				(error) => {
 					switch (error.code) {
@@ -77,7 +77,7 @@ class SearchBar extends Component {
 	onFormSubmit(event) {
 		//set get store location here
 		if(!this.canSubmitStoreTerm()){
-			
+
 			return;
 		}
 		event.preventDefault(); //prevent default submit form
@@ -101,12 +101,12 @@ class SearchBar extends Component {
 	render() {
 		const errors = this.validateForm(this.state.term);
 		const isEnabled = !Object.keys(errors).some( x => errors[x]);
-		
+
 		return (
 			<div className="main_search">
 				<div className="row clearfix">
-					<div className="mx-auto">
-						<h3>Find a 7-Eleven Store</h3>
+					<div className="p-0">
+						<h3 classname="h3 text-left">Find a 7-Eleven Store</h3>
 					</div>
 					<div className="col-12 pl-0 pr-0">
 						<button className="btn m-0 btn-lg btn-success w-100" onClick={ this.getStoresOnCurrentLocation }>
@@ -114,16 +114,16 @@ class SearchBar extends Component {
 						</button>
 					</div>
 					<div className="col-2" />
-					<div className="col-12 pt-1 pl-0 pr-0">
+					<div className="col-12 pt-0 pl-0 pr-0">
 						<span className="line-thru">
 							<h2>OR</h2>
 						</span>
 					</div>
 				</div>
-				<div className="row pt-3 clearfix">
+				<div className="row pt-2 clearfix">
 					<div className="col-12 pr-0 pl-0">
 						<form onSubmit={this.onFormSubmit}>
-							<div className="form-group">
+							<div className="form-group mb-0">
 								<div className="form-label-group">
 									<input
 										id="store_search"
@@ -141,7 +141,7 @@ class SearchBar extends Component {
 									</div>
 								</div>
 							</div>
-							
+
 							<button className="btn mt-2 btn-lg btn-success w-100" disabled={!isEnabled}>
 								<i className="fas fa-search" /> &nbsp; Find Stores
 							</button>
