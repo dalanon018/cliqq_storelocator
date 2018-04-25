@@ -165,7 +165,7 @@ body {
 }
 
 .store-number{
-  padding-top:0.65rem;
+  padding-top:0.8rem;
   background-color: #078162;
   border-radius: 50%;
   display: inline-block;
@@ -201,7 +201,8 @@ body {
 
   .main_search{
     padding-top: 1rem;
-
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
   }
 
   .map {
@@ -209,11 +210,19 @@ body {
     padding-right: 0.5rem;
     padding-left: 0.5rem;
   }
+}
 
+@media (max-width: 767px) {
   .mapDimensions{
     display:block;
     max-height: 60vh;
     width: 100%;
+  }
+}
 
+@media (max-width: 575px){
+  .main_search {
+    padding-right:0.5rem;
+    padding-left :0.5rem;
   }
 }

@@ -1,41 +1,86 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 // import logo from './logo.svg';
-import seven_eleven_logo from './header3.png';
-import './App.css';
-import SearchBar from './containers/search_bar';
-import MapContainer from './containers/map_container';
-import StoreList from './containers/store_list';
+import seven_eleven_logo from "./header3.png";
+import "./App.css";
+import SearchBar from "./containers/search_bar";
+import MapContainer from "./containers/map_container";
+import StoreList from "./containers/store_list";
+import queryString from "query-string";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 class App extends Component {
-	render() {
-		return (
-			<div className="App container-fluid pr-0 pl-0">
-				<header className="App-header navbar-pale">
-					<img src={seven_eleven_logo} className="App-logo" alt="logo" />
-					{/* <h1 className="App-title">Welcome to React</h1> */}
-				</header>
-				{/* <p className="App-intro">
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            mobileNumber: "",
+            callbackUrl: "",
+            submitted: false
+        };
+    }
+
+    componentWillMount() {
+        this.parseQueryString();
+    }
+
+    parseQueryString() {
+        console.log("Url params? : ", window.location.search);
+
+        const urlParams = window.location.search;
+        if (urlParams) {
+            let paramMap = queryString.parse(urlParams);
+            console.log(paramMap);
+
+            console.log("Mobile Number given: ", paramMap.mobileNumber);
+            console.log("Callback URL given: ", paramMap.callbackUrl);
+            console.log("Submitted Flag given: ", paramMap.submitted);
+
+            this.setState({
+                mobileNumber: paramMap.mobileNumber,
+                callbackUrl: paramMap.callbackUrl,
+                submitted: paramMap.submitted === "true"
+            });
+        }
+    }
+
+    render() {
+        console.log("window location :", window.location);
+		const { mobileNumber, callbackUrl } = this.state;
+		console.log("passing mobile number : ", mobileNumber);
+        // console.log("this props : ", this.props);
+        return (
+            <div className="App container-fluid pr-0 pl-0">
+                <header className="App-header navbar-pale">
+                    <img
+                        src={seven_eleven_logo}
+                        className="App-logo"
+                        alt="logo"
+                    />
+                    {/* <h1 className="App-title">Welcome to React</h1> */}
+                </header>
+                {/* <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p> */}
-				<div className="row no-gutters">
-					<div className="col-md-3 col-xs-12">
-						<div className="order-1">
-							<SearchBar />
-						</div>
-						
-						<div className="d-none d-sm-block">
-							<StoreList />
-						</div>
-					</div>
-					<div className="col-md-9 col-xs-12 order-xs-2">
-						<MapContainer />
-					</div>
-					<div className="d-block d-sm-none order-xs-3">
-						<StoreList />
-					</div>
-				</div>
-			</div>
-		);
-	}
+                <div className="row no-gutters">
+                    <div className="col-md-3 col-xs-12">
+                        <div className="order-1">
+                            <SearchBar mobileNumber={mobileNumber} />
+                        </div>
+
+                        <div className="d-none d-sm-block">
+                            <StoreList callbackUrl={callbackUrl} />
+                        </div>
+                    </div>
+                    <div className="col-md-9 col-xs-12 order-xs-2">
+                        <MapContainer />
+                    </div>
+                    <div className="d-block d-sm-none order-xs-3">
+                        <StoreList showBackToTopButton="true" />
+                    </div>
+                </div>
+            </div>
+        );
+    }
 }
 
 export default App;
