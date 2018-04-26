@@ -152,6 +152,7 @@ body {
 .storeList {
     max-height: 36vh;
     overflow-y: scroll;
+    padding-left:0.3rem;
 }
 
 .btn-success.active,
