@@ -43,7 +43,9 @@ class StoreList extends Component {
     sendToCallbackUrl = (storeNum, storeName, callbackUrl) => (event) => {
         console.log("Returning to ", callbackUrl);
         console.log("Stopping Propagation!");
-        event.stopPropagation();
+        if(event.stopPropagation){
+            event.stopPropagation();
+        }
 
         return window.location.replace(
             `${callbackUrl}?type=cod&storeId=${storeNum}&storeName=${storeName}`
@@ -51,7 +53,7 @@ class StoreList extends Component {
     };
 
     handleChildClick(event) {
-        // event.stopPropagation();
+        event.stopPropagation();
         console.log("Handling child click");
         alert("child button is clicked");
     }
@@ -61,14 +63,7 @@ class StoreList extends Component {
         const { callbackUrl } = this.props;
         console.log("[StoreList Props] callbackUrl is :", callbackUrl);
         const showButton = callbackUrl ? (
-            <StoreButton
-                storeNum={storeData.STORE_NUM}
-                storeName={storeData.STORE_NAME}
-                onClick={ (event) => {
-                    this.handleChildClick(event)
-                    }
-                }  
-            />
+            " "
         ) : (
             " "
         );
@@ -77,9 +72,9 @@ class StoreList extends Component {
                 className="list-group-item list-group-item-action waves-effect"
                 data-toggle="list"
                 key={storeData.STORE_NUM}
-                onClickCapture={ (event) => {this.zoomToStore(storeData,event)}}
+
             >
-                <div key={storeData.STORE_NUM} className="row">
+                <div key={storeData.STORE_NUM} className="row" onClickCapture={ this.zoomToStore(storeData) }>
                     <div className="col-3">
                         <span className="store-number">
                             {" "}
@@ -94,15 +89,21 @@ class StoreList extends Component {
                             <p>{storeData.REGION_NAME}</p>
                         </span>
                     </div>
-                    <div className="col-12">{ showButton }</div>
+                </div>
+                <div className="col-12" onClick={ (e) => {
+                    e.stopPropagation() }
+                }>
+                 {
                     <StoreButton
-                storeNum={storeData.STORE_NUM}
-                storeName={storeData.STORE_NAME}
-                onClick={ (event) => {
-                    this.handleChildClick
+                    storeNum={storeData.STORE_NUM}
+                    storeName={storeData.STORE_NAME}
+                    callbackUrl={ callbackUrl }
+                    onClick={
+                        this.sendToCallbackUrl(storeData.STORE_NUM, storeData.STORE_NAME, callbackUrl)
                     }
-                }  
-            />
+
+                    />
+                }
                 </div>
             </li>
         );
@@ -200,7 +201,7 @@ class StoreList extends Component {
                     <span onClick={this.backToTop}>Back to Top</span>
 
                     <div>
-                        <ul className="list-group storeList">
+                        <ul className="lithis.st-group storeList">
                             {stores.map((storeData, idx) =>
                                 this.renderStore(storeData)
                             )}
