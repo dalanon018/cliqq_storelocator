@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { zoomToStore } from "../actions/zoomToStore";
-import StoreButton from '../components/storeButton';
+import StoreButton from "../components/storeButton";
 class StoreList extends Component {
     constructor(props) {
         super(props);
@@ -12,10 +12,13 @@ class StoreList extends Component {
         };
         this.zoomToStore = this.zoomToStore.bind(this);
         this.backToTop = this.backToTop.bind(this);
+        this.sendToCallbackUrl = this.sendToCallbackUrl.bind(this);
+        this.handleChildClick = this.handleChildClick.bind(this);
     }
 
-    zoomToStore(individualStoreData) {
+    zoomToStore = (individualStoreData) => (event) => {
         console.log("Zoom to store: ", individualStoreData.STORE_NAME);
+        event.stopPropagation();
         this.props.zoomToStore(individualStoreData);
     }
 
@@ -32,27 +35,49 @@ class StoreList extends Component {
 
     componentDidMount() {
         console.log("Store List mounted. [props]: ", this.props);
-        this.setState((prevState, props) => 
-            ({ 
-                showStoreButton: this.props.callbackUrl ? true : false
-            })
-        );
-            
-    }    
+        this.setState((prevState, props) => ({
+            showStoreButton: this.props.callbackUrl ? true : false
+        }));
+    }
 
-    sendToCallbackUrl() {
-        
+    sendToCallbackUrl = (storeNum, storeName, callbackUrl) => (event) => {
+        console.log("Returning to ", callbackUrl);
+        console.log("Stopping Propagation!");
+        event.stopPropagation();
+
+        return window.location.replace(
+            `${callbackUrl}?type=cod&storeId=${storeNum}&storeName=${storeName}`
+        );
+    };
+
+    handleChildClick(event) {
+        // event.stopPropagation();
+        console.log("Handling child click");
+        alert("child button is clicked");
     }
 
     renderStore(storeData) {
-        console.log("storeData : ", storeData);
-
+        // console.log("storeData : ", storeData);
+        const { callbackUrl } = this.props;
+        console.log("[StoreList Props] callbackUrl is :", callbackUrl);
+        const showButton = callbackUrl ? (
+            <StoreButton
+                storeNum={storeData.STORE_NUM}
+                storeName={storeData.STORE_NAME}
+                onClick={ (event) => {
+                    this.handleChildClick(event)
+                    }
+                }  
+            />
+        ) : (
+            " "
+        );
         return (
             <li
                 className="list-group-item list-group-item-action waves-effect"
                 data-toggle="list"
                 key={storeData.STORE_NUM}
-                onClick={() => this.zoomToStore(storeData)}
+                onClickCapture={ (event) => {this.zoomToStore(storeData,event)}}
             >
                 <div key={storeData.STORE_NUM} className="row">
                     <div className="col-3">
@@ -68,32 +93,18 @@ class StoreList extends Component {
                             <p>{storeData.ADDRESS}</p>
                             <p>{storeData.REGION_NAME}</p>
                         </span>
-                        {/* <p>{individualStoreData.CITY}</p> */}
                     </div>
-                    <div className="col-12">
-                        {
-                            <StoreButton 
-                                storeNum={storeData.STORE_NUM}
-                                storeName={storeData.STORE_NAME}
-                            />
-                        }
-                    </div>
-                    
+                    <div className="col-12">{ showButton }</div>
+                    <StoreButton
+                storeNum={storeData.STORE_NUM}
+                storeName={storeData.STORE_NAME}
+                onClick={ (event) => {
+                    this.handleChildClick
+                    }
+                }  
+            />
                 </div>
             </li>
-
-            // <li key={individualStoreData.STORE_NUM} >
-            //     <div key={ individualStoreData.STORE_NUM } className="row">
-            //         <div className="col-1">{individualStoreData.STORE_NUM}</div>
-            //         <div className="col-10">
-            //         <b>{individualStoreData.STORE_NAME}</b>
-            //         <br/>
-            //         <span>{individualStoreData.ADDRESS}</span>
-            //         <p>{individualStoreData.CIY}</p>
-            //         <p>{individualStoreData.REGION_NAME}</p>
-            //         </div>
-            //     </div>
-            // </li>
         );
     }
 
@@ -105,9 +116,9 @@ class StoreList extends Component {
         //the currently javascript way
 
         const scrollHeight = this.el.scrollHeight;
-        console.log("scrollHeight: ", scrollHeight);
+        // console.log("scrollHeight: ", scrollHeight);
         const height = this.el.clientHeight;
-        console.log("height :", height);
+        // console.log("height :", height);
 
         // const maxScrollTop = scrollHeight - height;
         // console.log("max scroll height: ", maxScrollTop);
@@ -149,10 +160,10 @@ class StoreList extends Component {
             });
         }
 
-        console.log("Stores! : ", stores);
+        // console.log("Stores! : ", stores);
 
         if (!stores.length && this.props.storeList["1"]) {
-            console.log("no store found!");
+            // console.log("no store found!");
             console.log(
                 "this.props.storeList.status : ",
                 this.props.storeList.status
@@ -171,10 +182,12 @@ class StoreList extends Component {
         }
 
         if (stores.length) {
-            let holderText = this.props.storeList["1"] ? this.props.storeList["1"] : "Your Location"
-            let completeHolderText = "Stores Near " + holderText
-            if(this.props.storeList["1"] === 'mobileNumber'){
-              completeHolderText = 'Recently Visited Store'
+            let holderText = this.props.storeList["1"]
+                ? this.props.storeList["1"]
+                : "Your Location";
+            let completeHolderText = "Stores Near " + holderText;
+            if (this.props.storeList["1"] === "mobileNumber") {
+                completeHolderText = "Recently Visited Store";
             }
             return (
                 <div
@@ -183,11 +196,7 @@ class StoreList extends Component {
                     }}
                     className="store_list_container"
                 >
-                    <h4 className="h4">
-                      {
-                        completeHolderText
-                      } 
-                    </h4>
+                    <h4 className="h4">{completeHolderText}</h4>
                     <span onClick={this.backToTop}>Back to Top</span>
 
                     <div>
@@ -211,7 +220,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps({ storeList }) {
     // console.log("searchTerm present? :", searchTerm)
-    console.log("storeList present? :", storeList);
+    // console.log("storeList present? :", storeList);
     return { storeList }; //es6 magic storeList:storeList
 }
 
