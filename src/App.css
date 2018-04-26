@@ -1,74 +1,76 @@
 body {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 1.42857143;
     color: #333;
 }
 
-
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-logo {
-  /* animation: App-logo-spin infinite 20s linear; */
-  /* height: 50px; */
-  width:140px;
-  height:47px;
+    /* animation: App-logo-spin infinite 20s linear; */
+    /* height: 50px; */
+    width: 140px;
+    height: 47px;
 }
 
 .App-header {
-  background-color: #222;
-  min-height: 50px;
-  padding: 4px;
-  color: white;
+    background-color: #222;
+    min-height: 50px;
+    padding: 4px;
+    color: white;
 }
 
 .App-title {
-  font-size: 1.5em;
+    font-size: 1.5em;
 }
 
 .App-intro {
-  font-size: large;
+    font-size: large;
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .sidebar {
-  width: 100%;
+    width: 100%;
 }
 
 .map {
-  /**/
-  display:block;
+    /**/
+    display: block;
 }
 
 .mapDimensions {
-  width: 100%;
-  height: 90vh
+    width: 100%;
+    height: 90vh;
 }
 
 .clean {
     display: none;
 }
 
-
 /* CSS used here will be applied after bootstrap.css */
 .main_search {
-  background-color:white;
-  padding-top: 0.4rem;
-  padding-bottom:0.4rem;
-  padding-right: 2.5rem;
-  padding-left: 2.5rem
+    background-color: white;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    padding-right: 2.5rem;
+    padding-left: 2.5rem;
 }
 
 .store_list_container {
-  padding-top: 0.4rem;
-  padding-right: 1.5rem;
-  padding-left: 1.5rem
+    padding-top: 0.4rem;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
 }
 
 /* {
@@ -78,79 +80,83 @@ body {
 /** floating label css **/
 .form-label-group > input,
 .form-label-group > label {
-  padding: var(--input-padding-y) var(--input-padding-x);
+    padding: var(--input-padding-y) var(--input-padding-x);
 }
 
 .form-label-group > label {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  margin-bottom: 0; /* Override default `<label>` margin */
-  line-height: 1.5;
-  color: #495057;
-  border: 1px solid transparent;
-  border-radius: .25rem;
-  transition: all .1s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    margin-bottom: 0; /* Override default `<label>` margin */
+    line-height: 1.5;
+    color: #495057;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    transition: all 0.1s ease-in-out;
 }
 
 .form-label-group input::-webkit-input-placeholder {
-  color: transparent;
+    color: transparent;
 }
 
 .form-label-group input:-ms-input-placeholder {
-  color: transparent;
+    color: transparent;
 }
 
 .form-label-group input::-ms-input-placeholder {
-  color: transparent;
+    color: transparent;
 }
 
 .form-label-group input::-moz-placeholder {
-  color: transparent;
+    color: transparent;
 }
 
 .form-label-group input::placeholder {
-  color: transparent;
+    color: transparent;
 }
 
 .form-label-group input:not(:placeholder-shown) {
-  padding-top: calc(var(--input-padding-y) + var(--input-padding-y) * (2 / 3));
-  padding-bottom: calc(var(--input-padding-y) / 3);
+    padding-top: calc(
+        var(--input-padding-y) + var(--input-padding-y) * (2 / 3)
+    );
+    padding-bottom: calc(var(--input-padding-y) / 3);
 }
 
 .form-label-group input:not(:placeholder-shown) ~ label {
-  padding-top: calc(var(--input-padding-y) / 3);
-  padding-bottom: calc(var(--input-padding-y) / 3);
-  font-size: 12px;
-  color: #777;
+    padding-top: calc(var(--input-padding-y) / 3);
+    padding-bottom: calc(var(--input-padding-y) / 3);
+    font-size: 12px;
+    color: #777;
 }
 
 .line-thru {
-	display: block;
-	width: 100%;
-	border-bottom: 1px solid gray;
-	margin-top: -15px;
-	text-align: center;
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid gray;
+    margin-top: -15px;
+    text-align: center;
 }
 
 .line-thru h2 {
-	font-size: 15px;
-	text-align: center;
-	position: relative;
-	top: 17px;
-	padding: 0 18px;
-	display: inline-block;
-	background: white;
+    font-size: 15px;
+    text-align: center;
+    position: relative;
+    top: 17px;
+    padding: 0 18px;
+    display: inline-block;
+    background: white;
 }
 
-.storeList{
+.storeList {
     max-height: 36vh;
     overflow-y: scroll;
 }
 
-.btn-success.active, .btn-success:active, .btn-success:hover {
+.btn-success.active,
+.btn-success:active,
+.btn-success:hover {
     background-color: #419641;
     border-color: #3e8f3e;
 }
@@ -160,69 +166,75 @@ body {
     border: 0px;
 }
 
-.navbar-pale {
-  background: #E7E7E7;
+.button-set-store {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: 15px;
 }
 
-.store-number{
-  padding-top:0.8rem;
-  background-color: #078162;
-  border-radius: 50%;
-  display: inline-block;
-  width: 2.813rem;
-  height: 2.813rem;
-  vertical-align:baseline;
-  text-align:center;
-  color:white;
+.navbar-pale {
+    background: #e7e7e7;
+}
+
+.store-number {
+    padding-top: 0.8rem;
+    background-color: #078162;
+    border-radius: 50%;
+    display: inline-block;
+    width: 2.813rem;
+    height: 2.813rem;
+    vertical-align: baseline;
+    text-align: center;
+    color: white;
 }
 
 @media (min-width: 992px) {
     .sidebar {
-      width: 33.3333%;
+        width: 33.3333%;
     }
 
     .map {
-      border-left: 1px solid #fff;
-      /*position: absolute;*/
-      left: 33.3333%;
-      width: 65.666%;
-      top: 0;
-      bottom: 0;
-      display: block;
+        border-left: 1px solid #fff;
+        /*position: absolute;*/
+        left: 33.3333%;
+        width: 65.666%;
+        top: 0;
+        bottom: 0;
+        display: block;
     }
-
 }
 
 @media (max-width: 991px) {
-  .sidebar {
-    max-width: 100%;
-    max-height: 33%;
-  }
+    .sidebar {
+        max-width: 100%;
+        max-height: 33%;
+    }
 
-  .main_search{
-    padding-top: 1rem;
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
-  }
+    .main_search {
+        padding-top: 1rem;
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
+    }
 
-  .map {
-    top: 33%;
-    padding-right: 0.5rem;
-    padding-left: 0.5rem;
-  }
+    .map {
+        top: 33%;
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+    }
 }
 
 @media (max-width: 767px) {
-  .mapDimensions{
-    display:block;
-    max-height: 60vh;
-    width: 100%;
-  }
+    .mapDimensions {
+        display: block;
+        max-height: 60vh;
+        width: 100%;
+    }
 }
 
-@media (max-width: 575px){
-  .main_search {
-    padding-right:0.5rem;
-    padding-left :0.5rem;
-  }
+@media (max-width: 575px) {
+    .main_search {
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+    }
 }

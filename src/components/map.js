@@ -71,25 +71,25 @@ class Map extends Component {
     }
 
     centerOnMarker() {
-        console.log("centering on selected marker: ", this.props.zoomToStore);
+        // console.log("centering on selected marker: ", this.props.zoomToStore);
         if (this.props.zoomToStore) {
-            console.log("current markers are: ", this.state.markers);
+            // console.log("current markers are: ", this.state.markers);
             const storeId = this.props.zoomToStore["0"];
             const selectedMarker = this.state.markers.filter(marker => {
                 if (marker.get("store_id") === storeId) {
-                    console.log("marker found: ", marker);
+                    // console.log("marker found: ", marker);
                 }
                 return marker.get("store_id") === storeId;
             });
             if (selectedMarker.length) {
-                console.log(
-                    "selectedMarker position: ",
-                    selectedMarker["0"].getPosition()
-                );
+                // console.log(
+                //     "selectedMarker position: ",
+                //     selectedMarker["0"].getPosition()
+                // );
                 this.zoomOnSelectedMarker(selectedMarker["0"]);
                 // this.map.panTo(selectedMarker["0"].getPosition());
                 // this.map.setZoom(19);
-                console.log("selectedMarker is: ", selectedMarker);
+                // console.log("selectedMarker is: ", selectedMarker);
             } else {
                 console.log("no zoomToStore");
             }
@@ -104,7 +104,7 @@ class Map extends Component {
     }
 
     setCenterOnFirstMarker(firstMarker) {
-        console.log("centering on the first marker..");
+        // console.log("centering on the first marker..");
         this.map.setZoom(this.state.defaultZoom - 2);
         this.map.panTo(firstMarker.getPosition());
     }
@@ -156,7 +156,7 @@ class Map extends Component {
     }
 
     clearMarkers() {
-        console.log("clearing markers: ", this.state.markers);
+        // console.log("clearing markers: ", this.state.markers);
         this.state.markers.map(marker => {
             marker.setMap(null);
         });
@@ -367,11 +367,11 @@ class Map extends Component {
 }
 
 function mapStateToProps({ storeList, zoomToStore }) {
-    console.log("mapStateToProps for MAP component: ", storeList);
-    console.log(
-        "mapStateToProps for MAP component - zoomToStore: ",
-        zoomToStore
-    );
+    // console.log("mapStateToProps for MAP component: ", storeList);
+    // console.log(
+    //     "mapStateToProps for MAP component - zoomToStore: ",
+    //     zoomToStore
+    // );
     return { storeList, zoomToStore }; //es6 magic storeList:storeList
 }
 

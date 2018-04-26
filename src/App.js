@@ -68,14 +68,15 @@ class App extends Component {
                         </div>
 
                         <div className="d-none d-sm-block">
-                            <StoreList callbackUrl={callbackUrl} />
+                            <StoreList callbackUrl={callbackUrl} 
+                            />
                         </div>
                     </div>
                     <div className="col-md-9 col-xs-12 order-xs-2">
                         <MapContainer />
                     </div>
                     <div className="d-block d-sm-none order-xs-3">
-                        <StoreList showBackToTopButton="true" />
+                        <StoreList callbackUrl={callbackUrl} showBackToTopButton="true" />
                     </div>
                 </div>
             </div>
