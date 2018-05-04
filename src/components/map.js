@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import defaultStoreIcon from "../store_locator_marker.png";
+import { scrollToStore } from "../actions/scrollToStore";
 class Map extends Component {
     state = {
         markers: [],
@@ -12,7 +14,9 @@ class Map extends Component {
         if (prevProps.google !== this.props.google) {
             this.loadMap();
         }
-        if (prevProps.storeList !== this.props.storeList) {
+        if (prevProps.storeList !== this.props.storeList &&
+            prevProps.storeList[1] !== this.props.storeList[1]
+            ) {
             this.updateMap();
         }
         if (prevProps.zoomToStore !== this.props.zoomToStore) {
@@ -101,6 +105,13 @@ class Map extends Component {
         marker.setAnimation(google.maps.Animation.BOUNCE);
         this.map.setZoom(19);
         this.map.panTo(marker.getPosition());
+        console.log("Scroll to Selected Store hook");
+        
+    }
+
+    scrollToSelectedStore(storeId) {
+        console.log("Sending scrollToStore action. <" + storeId + ">")
+        this.props.scrollToStore(storeId);
     }
 
     setCenterOnFirstMarker(firstMarker) {
@@ -120,47 +131,59 @@ class Map extends Component {
                 return storeData;
             });
         }
-
+        var self = this;
         if (stores) {
-            stores.map((storeData, idx) => {
+            let currentMapMarkers = stores.map((storeData, idx) => {
                 // console.log('Generating marker for ', location);
-                setTimeout(() => {
-                    const marker = new google.maps.Marker({
-                        position: {
-                            lat: parseFloat(storeData.LATITUDE),
-                            lng: parseFloat(storeData.LONGITUDE)
-                        },
-                        map: this.map,
-                        title: storeData.STORE_NAME,
-                        icon: defaultStoreIcon,
-                        animation: google.maps.Animation.DROP,
-                        store_id: storeData.STORE_NUM
-                    });
-                    if (idx === 0) {
-                        this.setCenterOnFirstMarker(marker);
-                    }
-                    this.addMarkerClickListener(marker);
-                    currentMarkers.push(marker);
-                }, 1200);
+            
+                const marker = new google.maps.Marker({
+                    position: {
+                        lat: parseFloat(storeData.LATITUDE),
+                        lng: parseFloat(storeData.LONGITUDE)
+                    },
+                    map: this.map,
+                    title: storeData.STORE_NAME,
+                    icon: defaultStoreIcon,
+                    animation: google.maps.Animation.DROP,
+                    store_id: storeData.STORE_NUM
+                });
+                if (idx === 0) {
+                    this.setCenterOnFirstMarker(marker);
+                }
+                this.addMarkerClickListener(marker,self);
+                // setTimeout(() => {
+                //     marker.setMap(this.map)
+                // })
+                return marker
             });
-            this.setState({ markers: currentMarkers });
+            // console.log("currentMapMarker: ", currentMapMarkers);
+            this.setState({ markers: currentMapMarkers });
         }
     }
 
-    addMarkerClickListener(marker) {
+   
+    addMarkerClickListener(marker, self) {
         // console.log('adding click listener for the marker: ', marker);
+        const { google } = this.props;
         marker.addListener("click", function() {
             this.map.setZoom(19);
             this.map.panTo(marker.getPosition());
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+            self.scrollToSelectedStore(marker.get("store_id"));
         });
+        
     }
 
     clearMarkers() {
         // console.log("clearing markers: ", this.state.markers);
-        this.state.markers.map(marker => {
-            marker.setMap(null);
-        });
-        this.setState({ markers: [] });
+        if(this.state.markers.length){
+            this.state.markers.map(marker => {
+                marker.setMap(null);
+            });
+
+            this.setState({ markers: [] });
+        }
+        
     }
 
     loadMap() {
@@ -366,6 +389,10 @@ class Map extends Component {
     }
 }
 
+function mapDispatchToProps(dispatch){
+    return bindActionCreators({ scrollToStore }, dispatch);
+}
+
 function mapStateToProps({ storeList, zoomToStore }) {
     // console.log("mapStateToProps for MAP component: ", storeList);
     // console.log(
@@ -375,4 +402,4 @@ function mapStateToProps({ storeList, zoomToStore }) {
     return { storeList, zoomToStore }; //es6 magic storeList:storeList
 }
 
-export default connect(mapStateToProps)(Map);
+export default connect(mapStateToProps,mapDispatchToProps)(Map);

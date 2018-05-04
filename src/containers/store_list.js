@@ -1,36 +1,52 @@
 import React, { Component } from "react";
 // import { GoogleMap, Marker } from "react-google-maps";
+import ReactDOM from 'react-dom'
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { zoomToStore } from "../actions/zoomToStore";
 import StoreButton from "../components/storeButton";
+import StoreListItem from "../components/store-list-item";
+import scrollIntoView from "scroll-into-view"
 class StoreList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showStoreButton: false
+            showStoreButton: false,
+            selectedStore: ''
         };
         this.zoomToStore = this.zoomToStore.bind(this);
         this.backToTop = this.backToTop.bind(this);
         this.sendToCallbackUrl = this.sendToCallbackUrl.bind(this);
         this.handleChildClick = this.handleChildClick.bind(this);
+        this.storeLists = [];
+        this._nodes = new Map();
     }
 
     zoomToStore = (individualStoreData) => (event) => {
         console.log("Zoom to store: ", individualStoreData.STORE_NAME);
         event.stopPropagation();
         this.props.zoomToStore(individualStoreData);
+        this.setState({
+            selectedStore: individualStoreData.STORE_NUM
+        })
+        
     }
 
     componentDidUpdate(prevProps, prevState) {
+        
+        if(prevProps.storeScroll !== this.props.storeScroll){
+            this.scrollToSelectedStore();
+        }
         if (
             prevProps.storeList &&
             prevProps.storeList["0"] !== this.props.storeList["0"]
         ) {
             console.log("rerendering......");
             // this.render();
+            this.storeLists = [];
             this.scrollToBottom();
         }
+
     }
 
     componentDidMount() {
@@ -58,23 +74,82 @@ class StoreList extends Component {
         alert("child button is clicked");
     }
 
+    scrollToSelectedStore = () => {
+        console.log("Scrolling to the selected store!: ", this.props.storeScroll);
+        const { storeScroll } = this.props; 
+        
+        let _storeRef = storeScroll[0];
+        console.log("Current store list: ", this._nodes);
+
+        const node = this._nodes.get(_storeRef);
+        console.log("after finding node :",node);
+        if (node) {
+            const selectedNode = ReactDOM.findDOMNode(node);
+            selectedNode.setAttribute('selectedStore', _storeRef);
+            selectedNode.scrollIntoView({block: 'center', behavior: 'auto'});
+            
+            // React.cloneElement(
+            //     node,
+            //     {selectedStore: _storeRef},
+            //     null
+            // )
+            scrollIntoView(selectedNode,{
+                time:0,
+                align: {
+                    top: 0
+                }
+            } )
+            
+            selectedNode.click();
+            console.log("clicking");
+            
+        }
+    }   
+
     renderStore(storeData) {
         // console.log("storeData : ", storeData);
+        //"list-store-" + storeData.STORE_NUM
         const { callbackUrl } = this.props;
         console.log("[StoreList Props] callbackUrl is :", callbackUrl);
         const showButton = callbackUrl ? (
-            " "
+            <StoreButton
+                    storeNum={storeData.STORE_NUM}
+                    storeName={storeData.STORE_NAME}
+                    callbackUrl={ callbackUrl }
+                    onClick={
+                        this.sendToCallbackUrl(storeData.STORE_NUM, storeData.STORE_NAME, callbackUrl)
+                    }
+
+                    />
         ) : (
             " "
         );
+
         return (
             <li
                 className="list-group-item list-group-item-action waves-effect"
                 data-toggle="list"
                 key={storeData.STORE_NUM}
-
             >
-                <div key={storeData.STORE_NUM} className="row" onClickCapture={ this.zoomToStore(storeData) }>
+            <div
+                ref={ (element) => { this._nodes.set(storeData.STORE_NUM, element)}}
+            >
+                <StoreListItem 
+                    storeName={storeData.STORE_NAME}
+                    storeNum={storeData.STORE_NUM}
+                    address={storeData.ADDRESS}
+                    regionName={storeData.REGION_NAME}
+                    storeData = { storeData }
+                    storeListItemRef = { el => this.storeListItems = el }
+                    selectedStore = { this.state.selectedStore === storeData.STORE_NUM ? storeData.STORE_NUM : null }
+                    onClickCapture={ this.zoomToStore(storeData) }
+                />
+            </div>
+                
+                {/* <div key={storeData.STORE_NUM} 
+                    className={ this.state.selectedStore===storeData.STORE_NUM ? "selected-store row" : "row" } 
+                    onClickCapture={ this.zoomToStore(storeData) }
+                    >
                     <div className="col-3">
                         <span className="store-number">
                             {" "}
@@ -89,21 +164,10 @@ class StoreList extends Component {
                             <p>{storeData.REGION_NAME}</p>
                         </span>
                     </div>
-                </div>
+                </div> */}
                 <div className="col-12" onClick={ (e) => {
                     e.stopPropagation() }
-                }>
-                 {
-                    <StoreButton
-                    storeNum={storeData.STORE_NUM}
-                    storeName={storeData.STORE_NAME}
-                    callbackUrl={ callbackUrl }
-                    onClick={
-                        this.sendToCallbackUrl(storeData.STORE_NUM, storeData.STORE_NAME, callbackUrl)
-                    }
-
-                    />
-                }
+                }> { showButton }
                 </div>
             </li>
         );
@@ -137,7 +201,7 @@ class StoreList extends Component {
 
         window.scroll({
             left: 0,
-            top: this.el.scrollHeight,
+            top: scrollHeight,
             behavior: "smooth"
         });
     }
@@ -219,10 +283,10 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({ zoomToStore }, dispatch);
 }
 
-function mapStateToProps({ storeList }) {
+function mapStateToProps({ storeList, storeScroll }) {
     // console.log("searchTerm present? :", searchTerm)
     // console.log("storeList present? :", storeList);
-    return { storeList }; //es6 magic storeList:storeList
+    return { storeList, storeScroll }; //es6 magic storeList:storeList
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoreList);
