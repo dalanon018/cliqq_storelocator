@@ -14,10 +14,13 @@ class Map extends Component {
         if (prevProps.google !== this.props.google) {
             this.loadMap();
         }
-        if (prevProps.storeList !== this.props.storeList &&
-            prevProps.storeList[1] !== this.props.storeList[1]
+        if (prevProps.storeList !== this.props.storeList
+            // && prevProps.storeList[0] !== this.props.storeList[0] 
+            // && prevProps.storeList[1] !== this.props.storeList[1]
             ) {
-            this.updateMap();
+                this.updateMap();
+        } else {
+            console.warn("NO map update needed:");
         }
         if (prevProps.zoomToStore !== this.props.zoomToStore) {
             this.centerOnMarker();

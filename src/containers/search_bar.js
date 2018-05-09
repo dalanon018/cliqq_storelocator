@@ -14,7 +14,8 @@ class SearchBar extends Component {
                 term: false
             },
             getStoresOnCurrentLocationButtonClicked: false,
-            isLoaded: true
+            isLoaded: true,
+            sendSearchRequest: false
         };
 
         this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -22,6 +23,7 @@ class SearchBar extends Component {
         this.getStoresOnCurrentLocation = this.getStoresOnCurrentLocation.bind(
             this
         );
+        this._onKeyDown = this._onKeyDown.bind(this);
         // this.handleBlur = this.handleBlur.bind(this);
     }
     
@@ -49,7 +51,7 @@ class SearchBar extends Component {
     }
 
     handleBlur = field => evt => {
-        console.log("handling blur for: ", field);
+        // console.log("handling blur for: ", field);
         this.setState({
             touched: { ...this.state.touched, [field]: true }
         });
@@ -104,23 +106,42 @@ class SearchBar extends Component {
         this.setState({ locationText: "Loading..." });
     }
 
+    //storeName
+    //storeAddress
+    //storeNumber
+    //
+
     onFormSubmit(event) {
         //set get store location here
         if (!this.canSubmitStoreTerm()) {
             return;
         }
         event.preventDefault(); //prevent default submit form
+        // console.log("onFormSubmit sendSearchRequest?: ", this.state.sendSearchRequest)
         this.setState({ isLoaded: false})
-        this.props.fetchStores(this.state.term);
-        
-        
+        this._fetchStores(this.state.term);        
         // this.props.getSearchTerm(this.state.term);
         // this.setState({'term': ''});
+    }
+
+    _fetchStores(term){
+        this.props.fetchStores(term);
+        this.setState({term:''});
+        
     }
 
     onInputChange(event) {
         // console.log("The term is : ", event.target.value);
         this.setState({ term: event.target.value });
+    }
+
+    _onKeyDown(event){
+        if(event.keyCode !== 13){
+            return;
+        }
+
+        event.preventDefault();
+        this._fetchStores(this.state.term);  
     }
 
     canSubmitStoreTerm() {
@@ -133,8 +154,8 @@ class SearchBar extends Component {
     render() {
         const errors = this.validateForm(this.state.term);
         const isEnabled = !Object.keys(errors).some(x => errors[x]);
-        console.log("Search Bar Props: ", this.props);
-        console.log("Search Bar Props Location: ", this.props.location);
+        // console.log("Search Bar Props: ", this.props);
+        // console.log("Search Bar Props Location: ", this.props.location);
         return (
             <div className="main_search">
                 <div className="row clearfix">
@@ -174,6 +195,7 @@ class SearchBar extends Component {
                                             onChange={this.onInputChange}
                                             value={this.state.term}
                                             onBlur={this.handleBlur("term")}
+                                            onKeyDown={this._onKeyDown }
                                         />
                                         <label htmlFor="store_search">
                                             Enter Province or City
@@ -233,6 +255,7 @@ class SearchBar extends Component {
                                             onClick={
                                                 this.getStoresOnCurrentLocation
                                             }
+                                            type="button"
                                         >
                                             <i className="fas fa-location-arrow" />
                                         </button>
