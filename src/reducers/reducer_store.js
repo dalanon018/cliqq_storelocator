@@ -9,8 +9,8 @@ export default function(state=[], action){
             }
 
         case FETCH_STORE:
-            console.log("returning payload: ", action.payload);
-            console.log("Is there meta? ", action.meta);
+            // console.log("returning payload: ", action.payload);
+            // console.log("Is there meta? ", action.meta);
             const { term } = action.meta
             if(term){
                 return [ action.payload.data, term ]; 

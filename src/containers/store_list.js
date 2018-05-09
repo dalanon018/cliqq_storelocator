@@ -215,8 +215,8 @@ class StoreList extends Component {
     }
 
     render() {
-        console.log("StoreList: ", this.props.storeList);
-        console.log("searchTerm: ", this.props.searchTerm);
+        // console.log("StoreList: ", this.props.storeList);
+        // console.log("searchTerm: ", this.props.searchTerm);
         let storeProps = this.props.storeList["0"] || [];
         let stores = [];
         if (this.props.storeList && storeProps.length) {

@@ -26,7 +26,7 @@ class StoreListItem extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if(prevProps.storeScroll !== this.props.storeScroll){
-            console.log("Update this shit item and highlight green the fucking selected");
+            // console.log("Update this shit item and highlight green the fucking selected");
         }
     }
 
@@ -34,7 +34,7 @@ class StoreListItem extends Component {
         const { storeData, storeNum, storeName, address, regionName, selectedStore } = this.props;
         const scrollToListItem = this.props.storeScroll
         const isSelectedStore = scrollToListItem && scrollToListItem[0] && scrollToListItem[0] === storeNum ? true : false
-        console.log("is selectedStore?? : ", isSelectedStore);
+        // console.log("is selectedStore?? : ", isSelectedStore);
         return (
             <div
                 className={ isSelectedStore ? "selected-store row align-items-center" : "row align-items-center" }
