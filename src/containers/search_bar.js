@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchStores, getStoresOnCurrentLocation, getStoresByMobile } from "../actions/index";
+import Loader from "react-loader";
+
 class SearchBar extends Component {
     constructor(props) {
         super(props);
@@ -11,7 +13,8 @@ class SearchBar extends Component {
             touched: {
                 term: false
             },
-            getStoresOnCurrentLocationButtonClicked: false
+            getStoresOnCurrentLocationButtonClicked: false,
+            isLoaded: true
         };
 
         this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -38,6 +41,11 @@ class SearchBar extends Component {
             if (this.state.getStoresOnCurrentLocationButtonClicked)
                 this.setState({ locationText: "Location Found" });
         }
+
+        if(prevProps.storeList !== this.props.storeList){
+            this.setState({ isLoaded: true})
+        }
+
     }
 
     handleBlur = field => evt => {
@@ -102,7 +110,10 @@ class SearchBar extends Component {
             return;
         }
         event.preventDefault(); //prevent default submit form
+        this.setState({ isLoaded: false})
         this.props.fetchStores(this.state.term);
+        
+        
         // this.props.getSearchTerm(this.state.term);
         // this.setState({'term': ''});
     }
@@ -182,14 +193,25 @@ class SearchBar extends Component {
                                         </div>
                                     </div>
                                 </div>
-
-                                <button
-                                    className="btn mt-2 btn-lg btn-success w-100"
-                                    disabled={!isEnabled}
-                                >
-                                    <i className="fas fa-search" /> &nbsp; Find
-                                    Stores
-                                </button>
+                                <div>
+                                </div>
+                                <Loader loaded={this.state.isLoaded}
+                                    lines={11}
+                                    length={1}
+                                    width={5}
+                                    corners={1}
+                                    color="#078162"
+                                    >                                 
+                                    <button
+                                        className="btn mt-2 btn-lg btn-success w-100"
+                                        disabled={!isEnabled}
+                                    >
+                                        <i className="fas fa-search" /> &nbsp; Find
+                                        Stores
+                                    </button>
+                                </Loader>
+                                
+                                
                             </div>
                             <div className="col-12 d-block d-sm-none">
                                 <div className="input-group mb-3">
@@ -237,8 +259,8 @@ class SearchBar extends Component {
     }
 }
 
-function mapStateToProps({ currentLocation }) {
-    return { currentLocation };
+function mapStateToProps({ currentLocation, storeList }) {
+    return { currentLocation, storeList };
 }
 
 function mapDispatchToProps(dispatch) {
