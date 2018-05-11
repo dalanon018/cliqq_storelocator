@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { zoomToStore } from "../actions/zoomToStore";
 import StoreButton from "../components/storeButton";
-import StoreListItem from "../components/store-list-item";
+import StoreListItem from "../components/store_list_item";
 import scrollIntoView from "scroll-into-view"
 class StoreList extends Component {
     constructor(props) {
@@ -17,7 +17,6 @@ class StoreList extends Component {
         this.zoomToStore = this.zoomToStore.bind(this);
         this.backToTop = this.backToTop.bind(this);
         this.sendToCallbackUrl = this.sendToCallbackUrl.bind(this);
-        this.handleChildClick = this.handleChildClick.bind(this);
         this.storeLists = [];
         this._nodes = new Map();
     }
@@ -67,12 +66,6 @@ class StoreList extends Component {
             `${callbackUrl}?type=cod&storeId=${storeNum}&storeName=${storeName}`
         );
     };
-
-    handleChildClick(event) {
-        event.stopPropagation();
-        console.log("Handling child click");
-        alert("child button is clicked");
-    }
 
     scrollToSelectedStore = () => {
         console.log("Scrolling to the selected store!: ", this.props.storeScroll);
@@ -139,6 +132,7 @@ class StoreList extends Component {
                     storeNum={storeData.STORE_NUM}
                     address={storeData.ADDRESS}
                     regionName={storeData.REGION_NAME}
+                    telephone={storeData.TEL_NO}
                     storeData = { storeData }
                     storeListItemRef = { el => this.storeListItems = el }
                     selectedStore = { this.state.selectedStore === storeData.STORE_NUM ? storeData.STORE_NUM : null }
@@ -182,7 +176,7 @@ class StoreList extends Component {
 
         const scrollHeight = this.el.scrollHeight;
         // console.log("scrollHeight: ", scrollHeight);
-        const height = this.el.clientHeight;
+        // const height = this.el.clientHeight;
         // console.log("height :", height);
 
         // const maxScrollTop = scrollHeight - height;

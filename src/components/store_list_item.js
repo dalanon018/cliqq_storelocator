@@ -11,6 +11,7 @@ class StoreListItem extends Component {
         this.state = {
             selectedStore: ''
         };
+        this.displayPhone = this.displayPhone.bind(this);
     }
                 
     zoomToStore = (individualStoreData) => (event) => {
@@ -30,8 +31,18 @@ class StoreListItem extends Component {
         }
     }
 
+    displayPhone = (telephone) => {
+        let telText = telephone ? telephone : "(No telephone)"
+       return (
+            <div>
+                <i className="fas fa-phone" />{" "}{telText}
+            </div>
+        );
+
+    }
+
     render(){
-        const { storeData, storeNum, storeName, address, regionName, selectedStore } = this.props;
+        const { storeData, storeNum, storeName, address, regionName, telephone } = this.props;
         const scrollToListItem = this.props.storeScroll
         const isSelectedStore = scrollToListItem && scrollToListItem[0] && scrollToListItem[0] === storeNum ? true : false
         // console.log("is selectedStore?? : ", isSelectedStore);
@@ -40,7 +51,7 @@ class StoreListItem extends Component {
                 className={ isSelectedStore ? "selected-store row align-items-center" : "row align-items-center" }
                 onClickCapture = { this.zoomToStore(storeData) }
             >
-                <div className="col-4 align-self-center">
+                <div className="col-4 align-self-start">
                     <span className="store-number">
                         {" "}
                         {storeNum}
@@ -53,6 +64,7 @@ class StoreListItem extends Component {
                     <span className="text-left">
                         <p>{address}</p>
                         <p>{regionName}</p>
+                        <p>{this.displayPhone(telephone)}</p>
                     </span>
                 </div>
             </div>
