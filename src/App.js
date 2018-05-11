@@ -7,7 +7,7 @@ import MapContainer from "./containers/map_container";
 import StoreList from "./containers/store_list";
 import queryString from "query-string";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
+import CliqqMerchantForm from "./components/cliqqapp-merchant-form"
 class App extends Component {
     constructor(props) {
         super(props);
@@ -15,7 +15,8 @@ class App extends Component {
         this.state = {
             mobileNumber: "",
             callbackUrl: "",
-            submitted: false
+            submitted: false,
+            paramMap: {}
         };
     }
 
@@ -38,14 +39,15 @@ class App extends Component {
             this.setState({
                 mobileNumber: paramMap.mobileNumber,
                 callbackUrl: paramMap.callbackUrl,
-                submitted: paramMap.submitted === "true"
+                submitted: paramMap.submitted === "true",
+                paramMap: paramMap
             });
         }
     }
 
     render() {
         console.log("window location :", window.location);
-		const { mobileNumber, callbackUrl } = this.state;
+		const { mobileNumber, callbackUrl, paramMap } = this.state;
 		console.log("passing mobile number : ", mobileNumber);
         // console.log("this props : ", this.props);
         return (
@@ -69,7 +71,9 @@ class App extends Component {
                             </div>
 
                             <div className="d-none d-sm-block">
-                                <StoreList callbackUrl={callbackUrl} 
+                                <StoreList 
+                                    callbackUrl={callbackUrl} 
+                                    paramMap={paramMap}
                                 />
                             </div>
                         </div>
@@ -77,7 +81,11 @@ class App extends Component {
                             <MapContainer />
                         </div>
                         <div className="d-block d-sm-none order-xs-3">
-                            <StoreList callbackUrl={callbackUrl} showBackToTopButton="true" />
+                            <StoreList 
+                                callbackUrl={callbackUrl} 
+                                showBackToTopButton="true" 
+                                paramMap={paramMap}
+                            />
                         </div>
                     </div>
                 </div>
