@@ -118,16 +118,15 @@ class SearchBar extends Component {
         }
         event.preventDefault(); //prevent default submit form
         // console.log("onFormSubmit sendSearchRequest?: ", this.state.sendSearchRequest)
-        this.setState({ isLoaded: false})
         this._fetchStores(this.state.term);        
         // this.props.getSearchTerm(this.state.term);
         // this.setState({'term': ''});
     }
 
     _fetchStores(term){
+        this.setState({ isLoaded: false})        
         this.props.fetchStores(term);
         this.setState({term:''});
-        
     }
 
     onInputChange(event) {

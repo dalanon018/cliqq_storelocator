@@ -9,6 +9,7 @@ const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
 // const ROOT_URL = `https://mapservice-backend.philseven.com/api/web/v3/locators/dropdowndata`;
 const STORE_LIST_URL = `https://mapservice-backend.philseven.com/api/web/v3/locators/storelist`;
+const CLIQQ_APP_STORE_LOCATOR_URL = `https://emap.cliqq.net.com/api/web/v3/locators/storelist`;
 export async function fetchStores(searchTerm) {
 	// const url=`${ROOT_URL}?term=${searchTerm}`;
 	// const storeListURL =`${STORE_LIST_URL}?location=${searchTerm}`;

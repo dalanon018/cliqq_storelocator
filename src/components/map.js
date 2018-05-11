@@ -7,8 +7,14 @@ import { scrollToStore } from "../actions/scrollToStore";
 class Map extends Component {
     state = {
         markers: [],
-        defaultZoom: 14
+        defaultZoom: 14,
+        clickedMarker: null,
+        lastClickedMarker: null
     };
+
+    componentDidMount() {
+        this.loadMap();
+    }
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.google !== this.props.google) {
@@ -49,10 +55,6 @@ class Map extends Component {
         }
     }
 
-    componentDidMount() {
-        this.loadMap();
-    }
-
     getStoresAroundLocation() {
         if (this.props.centerAroundCurrentLoc) {
             if (navigator && navigator.geolocation) {
@@ -74,6 +76,16 @@ class Map extends Component {
         this.clearMarkers();
         if (this.props && this.props.google) {
             this.generateMarkers();
+        }
+    }
+
+    getMarker(markerId){
+        const filteredMarkers = this.state.markers.filter(marker => {
+            return marker.get("store_id") === markerId
+        })
+
+        if(filteredMarkers){
+            return filteredMarkers[0]        
         }
     }
 
@@ -104,8 +116,9 @@ class Map extends Component {
     }
 
     zoomOnSelectedMarker(marker) {
-        const { google } = this.props;
-        marker.setAnimation(google.maps.Animation.BOUNCE);
+        // const { google } = this.props;
+        this.toggleMarkerBounce(marker.get("store_id"))
+        // marker.setAnimation(google.maps.Animation.BOUNCE);
         this.map.setZoom(19);
         this.map.panTo(marker.getPosition());
         console.log("Scroll to Selected Store hook");
@@ -125,7 +138,7 @@ class Map extends Component {
 
     generateMarkers() {
         const { google } = this.props;
-        const currentMarkers = [];
+        // const currentMarkers = [];
 
         let storeProps = this.props.storeList["0"] || [];
         let stores = [];
@@ -163,24 +176,42 @@ class Map extends Component {
             this.setState({ markers: currentMapMarkers });
         }
     }
-
    
     addMarkerClickListener(marker, self) {
         // console.log('adding click listener for the marker: ', marker);
-        const { google } = this.props;
+        // const { google } = this.props;
         marker.addListener("click", function() {
             this.map.setZoom(19);
             this.map.panTo(marker.getPosition());
-            marker.setAnimation(google.maps.Animation.BOUNCE);
+            self.toggleMarkerBounce(marker.get("store_id"));
             self.scrollToSelectedStore(marker.get("store_id"));
         });
         
     }
 
+    toggleMarkerBounce = (marker) => {
+        console.info("Toggling Bounce for marker : ", marker);
+        const { google } = this.props;
+        const { lastClickedMarker } = this.state
+        this.setState({clickedMarker: marker})
+        if(lastClickedMarker !== marker){
+            let markerObj = this.getMarker(marker);
+            markerObj.setAnimation(google.maps.Animation.BOUNCE);
+            if(lastClickedMarker){
+                let lcMObj = this.getMarker(lastClickedMarker);
+                lcMObj.setAnimation(null);
+                this.setState({lastClickedMarker: marker});
+            } else {
+                this.setState({lastClickedMarker: marker});
+            }        
+        }
+
+    }
+
     clearMarkers() {
         // console.log("clearing markers: ", this.state.markers);
         if(this.state.markers.length){
-            this.state.markers.map(marker => {
+            this.state.markers.forEach(marker => {
                 marker.setMap(null);
             });
 
@@ -379,11 +410,6 @@ class Map extends Component {
     }
 
     render() {
-        const style = {
-            width: "65vw",
-            height: "87vh"
-        };
-
         return (
             <div ref="map" className="mapDimensions">
                 Loading map...
