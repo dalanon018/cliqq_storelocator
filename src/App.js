@@ -35,11 +35,13 @@ class App extends Component {
             console.log("Mobile Number given: ", paramMap.mobileNumber);
             console.log("Callback URL given: ", paramMap.callbackUrl);
             console.log("Submitted Flag given: ", paramMap.submitted);
-
+            console.log("modePayment Flag given: ", paramMap.modePayment);
+            
             this.setState({
                 mobileNumber: paramMap.mobileNumber,
                 callbackUrl: paramMap.callbackUrl,
                 submitted: paramMap.submitted === "true",
+                modePayment: paramMap.modePayment,
                 paramMap: paramMap
             });
         }
