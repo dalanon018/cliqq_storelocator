@@ -102,13 +102,14 @@ class StoreList extends Component {
     renderStore(storeData) {
         // console.log("storeData : ", storeData);
         //"list-store-" + storeData.STORE_NUM
-        const { callbackUrl } = this.props;
+        const { callbackUrl, paramMap } = this.props;
         console.log("[StoreList Props] callbackUrl is :", callbackUrl);
         const showButton = callbackUrl ? (
             <StoreButton
                     storeNum={storeData.STORE_NUM}
                     storeName={storeData.STORE_NAME}
                     callbackUrl={ callbackUrl }
+                    paramMap = { paramMap }
                     onClick={
                         this.sendToCallbackUrl(storeData.STORE_NUM, storeData.STORE_NAME, callbackUrl)
                     }

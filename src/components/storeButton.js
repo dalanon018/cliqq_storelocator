@@ -18,8 +18,9 @@ class StoreButton  extends Component {
     sendToCallbackUrl = (callbackUrl) => {
         console.log("Returning to ", callbackUrl);
         console.log("Stopping Propagation!");
-        const { storeNum, storeName, modePayment } = this.props;
-        let paymentType = modePayment? modePayment: 'cod'
+        const { storeNum, storeName, paramMap } = this.props;
+        let paymentType = paramMap.modePayment ? paramMap.modePayment : 'cod'
+        console.info("Mode of Payment is : ", paymentType);
         return window.location.replace(
             `${callbackUrl}?type=${paymentType}&storeId=${storeNum}&storeName=${storeName}`
         );
