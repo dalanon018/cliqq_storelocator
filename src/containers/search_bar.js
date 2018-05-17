@@ -15,7 +15,8 @@ class SearchBar extends Component {
             },
             getStoresOnCurrentLocationButtonClicked: false,
             isLoaded: true,
-            sendSearchRequest: false
+            sendSearchRequest: false,
+            locationNotFound: false
         };
 
         this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -88,6 +89,7 @@ class SearchBar extends Component {
                             console.log(
                                 "User did not consent to sharing location data"
                             );
+                            this.setState({ locationText : "Not Found", locationNotFound: true});
                             break;
                         case error.POSITION_UNAVAILABLE:
                             console.log("Cannot get current user position");
@@ -135,12 +137,21 @@ class SearchBar extends Component {
     }
 
     _onKeyDown(event){
+        
         if(event.keyCode !== 13){
+            this.onInputChange(event);
             return;
+        } else {
+            const errors = this.validateForm(this.state.term);
+            this.onInputChange(event);            
+            event.preventDefault();
+            if(errors)
+                console.warn("Cannot fetch stores on empty string")
+            else {
+                console.warn("Fetching stores on term: ", this.state.term);                
+                this._fetchStores(this.state.term);                  
+            }
         }
-
-        event.preventDefault();
-        this._fetchStores(this.state.term);  
     }
 
     canSubmitStoreTerm() {
@@ -191,10 +202,10 @@ class SearchBar extends Component {
                                             placeholder="Enter Province or City"
                                             autoFocus=""
                                             type="text"
-                                            onChange={this.onInputChange}
+                                            onInput={this.onInputChange}
                                             value={this.state.term}
                                             onBlur={this.handleBlur("term")}
-                                            onKeyDown={this._onKeyDown }
+                                            onKeyUp={this._onKeyDown }
                                         />
                                         <label htmlFor="store_search">
                                             Enter Province or City
@@ -244,9 +255,10 @@ class SearchBar extends Component {
                                         aria-describedby="basic-addon2"
                                         autoFocus=""
                                         type="text"
-                                        onChange={this.onInputChange}
+                                        onInput={this.onInputChange}
                                         value={this.state.term}
                                         onBlur={this.handleBlur("term")}
+                                        onKeyUp={this._onKeyDown }                                        
                                     />
                                     <div className="input-group-append">
                                         <button

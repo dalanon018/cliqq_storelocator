@@ -64,7 +64,7 @@ class StoreListItem extends Component {
                     <span className="text-left">
                         <p>{address}</p>
                         <p>{regionName}</p>
-                        <p>{this.displayPhone(telephone)}</p>
+                        <span>{this.displayPhone(telephone)}</span>
                     </span>
                 </div>
             </div>
