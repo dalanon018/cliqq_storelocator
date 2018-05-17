@@ -26,7 +26,7 @@ class Map extends Component {
             ) {
                 this.updateMap();
         } else {
-            console.warn("NO map update needed:");
+            console.warn("No map update needed.");
         }
         if (prevProps.zoomToStore !== this.props.zoomToStore) {
             this.centerOnMarker();
