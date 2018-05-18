@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { zoomToStore } from "../actions/zoomToStore";
-import { scrollToStore } from "../actions/scrollToStore";
 
 class StoreListItem extends Component {
 
@@ -12,23 +9,6 @@ class StoreListItem extends Component {
             selectedStore: ''
         };
         this.displayPhone = this.displayPhone.bind(this);
-    }
-                
-    zoomToStore = (individualStoreData) => (event) => {
-        console.log("StoreListItem Zoom to store: ", individualStoreData.STORE_NAME);
-        event.stopPropagation();
-        this.props.zoomToStore(individualStoreData);
-        this.setState({
-            selectedStore: individualStoreData.STORE_NUM
-        })
-        this.props.scrollToStore(individualStoreData.STORE_NUM);
-        
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if(prevProps.storeScroll !== this.props.storeScroll){
-            // console.log("Update this shit item and highlight green the fucking selected");
-        }
     }
 
     displayPhone = (telephone) => {
@@ -49,7 +29,7 @@ class StoreListItem extends Component {
         return (
             <div
                 className={ isSelectedStore ? "selected-store row align-items-center" : "row align-items-center" }
-                onClickCapture = { this.zoomToStore(storeData) }
+                onClickCapture = {  this.props.handleZoomToStore }
             >
                 <div className="col-4 align-self-start">
                     <span className="store-number">
@@ -74,12 +54,8 @@ class StoreListItem extends Component {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ zoomToStore, scrollToStore }, dispatch);
-}
-
 function mapStateToProps({ storeScroll }) {
     return { storeScroll };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StoreListItem);
+export default connect(mapStateToProps, null)(StoreListItem);

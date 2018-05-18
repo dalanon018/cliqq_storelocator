@@ -1,57 +1,39 @@
 import React, { Component } from 'react';
-import { Prompt } from 'react-router-dom';
 class StoreButton  extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            click: false,
-            isBlocking: false
+            click: false
         } ;
-        this._onClickHandler = this._onClickHandler.bind(this);
     }
 
-    _onClickHandler(e) {
-        const { callbackUrl } = this.props;
-        this.sendToCallbackUrl(callbackUrl)
-    }
-
-    sendToCallbackUrl = (callbackUrl) => {
-        console.log("Returning to ", callbackUrl);
-        console.log("Stopping Propagation!");
-        const { storeNum, storeName, paramMap } = this.props;
-        let paymentType = paramMap.modePayment ? paramMap.modePayment : 'cod'
-        console.info("Mode of Payment is : ", paymentType);
-        return window.location.replace(
-            `${callbackUrl}?type=${paymentType}&storeId=${storeNum}&storeName=${storeName}`
-        );
-    };
+    // setIsBlockingTrue = () => {
+    //     this.setState({isBlocking:true});        
+    //     console.info("setting isBlocking to true:", this.state.isBlocking);
+    //     this.props.setIsBlockingTrue(true);
+    // }
 
     render () {
-        const { isBlocking } = this.state;
         return (
-            <span>
-                <Prompt
-                    when={isBlocking}
-                    message={location =>
-                        `Are you sure you want to go to select this store?`
-                    }
-                />  
+            <div className="store-button">
                 <button
                     data-id="__setLocation"
                     data-storenum={this.props.storeNum}
                     data-storename={this.props.storeName}
                     type="button"
                     className="button-set-store btn btn-success btn-lg"
-                    onClick={ (event) => {
-                        this.setState({isBlocking:true});
-                        this._onClickHandler(event);
-                    }}
+                    data-toggle="modal"
+                    data-target="#confirmSelection"
+                    onClick={ 
+                        this.props.handleClick
+                    }
                 >
                 Set Store{" "}
                 </button>
-            </span>
+            </div>
         );
     }
 }
 
 export default StoreButton
+

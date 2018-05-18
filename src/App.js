@@ -16,7 +16,8 @@ class App extends Component {
             mobileNumber: "",
             callbackUrl: "",
             submitted: false,
-            paramMap: {}
+            paramMap: {},
+            isBlocking: false
         };
     }
 

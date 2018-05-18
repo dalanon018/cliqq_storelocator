@@ -194,6 +194,10 @@ body {
     color: white;
 }
 
+.store-button {
+    margin: 0.2rem;
+}
+
 .selected-store {
     background: #ddf9cf;
 }

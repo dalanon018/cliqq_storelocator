@@ -1,33 +1,35 @@
 import React, { Component } from "react";
-// import { GoogleMap, Marker } from "react-google-maps";
 import ReactDOM from 'react-dom'
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { zoomToStore } from "../actions/zoomToStore";
+import { setIsBlockingTrue } from "../actions/setIsBlocking";
 import StoreButton from "../components/storeButton";
 import StoreListItem from "../components/store_list_item";
-import scrollIntoView from "scroll-into-view"
+import scrollIntoView from "scroll-into-view";
+import NavigationModal from "../components/navigation_modal";
+import NavigationPrompt from "react-router-navigation-prompt";
+import ReactModal from "react-modal";
+import { scrollToStore } from "../actions/scrollToStore";
+
+ReactModal.setAppElement("#root");
+
 class StoreList extends Component {
     constructor(props) {
         super(props);
         this.state = {
             showStoreButton: false,
-            selectedStore: ''
+            selectedStore: '',
+            modalShown: false,
+            selectedStoreNumber: '',
+            selectedStoreName:''
         };
-        this.zoomToStore = this.zoomToStore.bind(this);
+        this.callZoomToStore = this.callZoomToStore.bind(this);
         this.backToTop = this.backToTop.bind(this);
         this.sendToCallbackUrl = this.sendToCallbackUrl.bind(this);
         this.storeLists = [];
         this._nodes = new Map();
-    }
-
-    zoomToStore = (individualStoreData) => (event) => {
-        console.log("Zoom to store: ", individualStoreData.STORE_NAME);
-        event.stopPropagation();
-        this.props.zoomToStore(individualStoreData);
-        this.setState({
-            selectedStore: individualStoreData.STORE_NUM
-        })
+        this.handleCloseModal = this.handleCloseModal.bind(this);
         
     }
 
@@ -51,21 +53,36 @@ class StoreList extends Component {
     componentDidMount() {
         console.log("Store List mounted. [props]: ", this.props);
         this.setState((prevState, props) => ({
-            showStoreButton: this.props.callbackUrl ? true : false
+            showStoreButton: this.props.callbackUrl ? true : false,
         }));
+
     }
 
-    sendToCallbackUrl = (storeNum, storeName, callbackUrl) => (event) => {
+    sendToCallbackUrl= () => (event) => {
         console.log("Returning to ", callbackUrl);
-        console.log("Stopping Propagation!");
-        if(event.stopPropagation){
-            event.stopPropagation();
-        }
-
+        // console.log("Stopping Propagation!");
+        event.stopPropagation();
+        const { paramMap, callbackUrl } = this.props;
+        const { selectedStoreNumber, selectedStoreName } = this.state;
+        let paymentType = paramMap.modePayment ? paramMap.modePayment : 'cod'
+        console.info("Mode of Payment is : ", paymentType);
+        console.info("Returning  of Payment is : ", paymentType);
+        this.toggleModal();
         return window.location.replace(
-            `${callbackUrl}?type=cod&storeId=${storeNum}&storeName=${storeName}`
+            `${callbackUrl}?type=${paymentType}&storeId=${selectedStoreNumber}&storeName=${selectedStoreName}`
         );
     };
+
+    callZoomToStore = (individualStoreData) => (event) => {
+        console.log("Store List callZoomToStore: ", individualStoreData.STORE_NAME);
+        // event.stopPropagation();
+        this.props.zoomToStore(individualStoreData);
+        this.props.scrollToStore(individualStoreData.STORE_NUM);
+        this.setState({
+            selectedStore: individualStoreData.STORE_NUM
+        })
+        
+    }
 
     scrollToSelectedStore = () => {
         console.log("Scrolling to the selected store!: ", this.props.storeScroll);
@@ -81,11 +98,6 @@ class StoreList extends Component {
             selectedNode.setAttribute('selectedStore', _storeRef);
             selectedNode.scrollIntoView({block: 'center', behavior: 'auto'});
             
-            // React.cloneElement(
-            //     node,
-            //     {selectedStore: _storeRef},
-            //     null
-            // )
             scrollIntoView(selectedNode,{
                 time:0,
                 align: {
@@ -93,28 +105,24 @@ class StoreList extends Component {
                 }
             } )
             
-            selectedNode.click();
-            console.log("clicking");
-            
+            selectedNode.click();           
         }
     }   
 
     renderStore(storeData) {
         // console.log("storeData : ", storeData);
         //"list-store-" + storeData.STORE_NUM
-        const { callbackUrl, paramMap } = this.props;
+        const { callbackUrl } = this.props;
         console.log("[StoreList Props] callbackUrl is :", callbackUrl);
         const showButton = callbackUrl ? (
             <StoreButton
-                    storeNum={storeData.STORE_NUM}
-                    storeName={storeData.STORE_NAME}
-                    callbackUrl={ callbackUrl }
-                    paramMap = { paramMap }
-                    onClick={
-                        this.sendToCallbackUrl(storeData.STORE_NUM, storeData.STORE_NAME, callbackUrl)
+                storeNum={storeData.STORE_NUM}
+                storeName={storeData.STORE_NAME}
+                handleClick={ (event) => {
+                        this.toggleModal(storeData.STORE_NUM, storeData.STORE_NAME)
                     }
-
-                    />
+                }
+            />
         ) : (
             " "
         );
@@ -125,44 +133,23 @@ class StoreList extends Component {
                 data-toggle="list"
                 key={storeData.STORE_NUM}
             >
-            <div
-                ref={ (element) => { this._nodes.set(storeData.STORE_NUM, element)}}
-            >
-                <StoreListItem 
-                    storeName={storeData.STORE_NAME}
-                    storeNum={storeData.STORE_NUM}
-                    address={storeData.ADDRESS}
-                    regionName={storeData.REGION_NAME}
-                    telephone={storeData.TEL_NO}
-                    storeData = { storeData }
-                    storeListItemRef = { el => this.storeListItems = el }
-                    selectedStore = { this.state.selectedStore === storeData.STORE_NUM ? storeData.STORE_NUM : null }
-                    onClickCapture={ this.zoomToStore(storeData) }
-                />
-            </div>
-                
-                {/* <div key={storeData.STORE_NUM} 
-                    className={ this.state.selectedStore===storeData.STORE_NUM ? "selected-store row" : "row" } 
-                    onClickCapture={ this.zoomToStore(storeData) }
-                    >
-                    <div className="col-3">
-                        <span className="store-number">
-                            {" "}
-                            {storeData.STORE_NUM}{" "}
-                        </span>
-                    </div>
-                    <div className="col-9">
-                        <b>{storeData.STORE_NAME}</b>
-                        <br />
-                        <span className="text-left">
-                            <p>{storeData.ADDRESS}</p>
-                            <p>{storeData.REGION_NAME}</p>
-                        </span>
-                    </div>
-                </div> */}
-                <div className="col-12" onClick={ (e) => {
-                    e.stopPropagation() }
-                }> { showButton }
+                <div
+                    ref={ (element) => { this._nodes.set(storeData.STORE_NUM, element)}}
+                >
+                    <StoreListItem 
+                        storeName={storeData.STORE_NAME}
+                        storeNum={storeData.STORE_NUM}
+                        address={storeData.ADDRESS}
+                        regionName={storeData.REGION_NAME}
+                        telephone={storeData.TEL_NO}
+                        storeData = { storeData }
+                        storeListItemRef = { el => this.storeListItems = el }
+                        selectedStore = { this.state.selectedStore === storeData.STORE_NUM ? storeData.STORE_NUM : null }
+                        handleZoomToStore={ this.callZoomToStore(storeData) }
+                    />
+                </div>
+                <div className="col-12" > 
+                    { showButton }
                 </div>
             </li>
         );
@@ -170,22 +157,8 @@ class StoreList extends Component {
 
     scrollToBottom() {
         console.log("scrolling to bottom");
-        //the modern way but not currently supported in all browsers
-        // this.el.scrollIntoView({behavior:'smooth'});
-
-        //the currently javascript way
-
         const scrollHeight = this.el.scrollHeight;
-        // console.log("scrollHeight: ", scrollHeight);
-        // const height = this.el.clientHeight;
-        // console.log("height :", height);
 
-        // const maxScrollTop = scrollHeight - height;
-        // console.log("max scroll height: ", maxScrollTop);
-        // this.el.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
-
-        // this.el.scrollTop = this.el.scrollHeight;
-        // this.el.scrollthis.el.scrollHeight
         if (!this.el) {
             window.scroll({
                 left: 0,
@@ -209,6 +182,19 @@ class StoreList extends Component {
         });
     }
 
+    toggleModal = (storeNumber, storeName) => {
+        this.props.setIsBlockingTrue(true);
+        this.setState({ 
+            modalShown: true,
+            selectedStoreNumber: storeNumber,
+            selectedStoreName: storeName
+        });
+    }
+
+    handleCloseModal = () => {
+        this.setState({ modalShown: false  });
+    }
+
     render() {
         // console.log("StoreList: ", this.props.storeList);
         // console.log("searchTerm: ", this.props.searchTerm);
@@ -219,9 +205,6 @@ class StoreList extends Component {
                 return storeData;
             });
         }
-
-        // console.log("Stores! : ", stores);
-
         if (!stores.length && this.props.storeList["1"]) {
             // console.log("no store found!");
             console.log(
@@ -256,6 +239,40 @@ class StoreList extends Component {
                     }}
                     className="store_list_container"
                 >
+                    {/* <NavigationPrompt when={ this.props.isBlocking } >
+                        {
+                            ({onConfirm, onCancel}) => (
+                                <NavigationModal
+                                    when={this.props.isBlocking} onCancel={onCancel} onConfirm={onConfirm}    
+                                />
+                            )
+                        }
+                    </NavigationPrompt> */}
+                    <ReactModal
+                        isOpen={ this.state.modalShown }
+                        contentLabel="Confirm Selection"
+                        onRequestClose={ this.handleCloseModal }
+                        shouldCloseOnEsc={false}
+                        shouldCloseOnOverlayClick={false}
+                        shouldFocusAfterRender={true}
+                    >
+                        <p>Are you sure you want to select this store?</p>
+                        <button 
+                            className="btn btn-secondary" 
+                            onClick={this.handleCloseModal}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            className="btn btn-primary"
+                            onClick= { (event) => {
+                                    this.sendToCallbackUrl()(event)
+                                }    
+                            }
+                        >
+                            Confirm
+                        </button>
+                    </ReactModal>
                     <h4 className="h4">{completeHolderText}</h4>
                     <span onClick={this.backToTop}>Back to Top</span>
 
@@ -266,7 +283,10 @@ class StoreList extends Component {
                             )}
                         </ul>
                     </div>
+
+
                 </div>
+               
             );
         }
 
@@ -275,13 +295,13 @@ class StoreList extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ zoomToStore }, dispatch);
+    return bindActionCreators({ zoomToStore, scrollToStore, setIsBlockingTrue }, dispatch);
 }
 
-function mapStateToProps({ storeList, storeScroll }) {
+function mapStateToProps({ storeList, storeScroll, isBlocking }) {
     // console.log("searchTerm present? :", searchTerm)
-    // console.log("storeList present? :", storeList);
-    return { storeList, storeScroll }; //es6 magic storeList:storeList
+    // console.log("isBlocking present? :", isBlocking);
+    return { storeList, storeScroll, isBlocking }; //es6 magic storeList:storeList
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoreList);
