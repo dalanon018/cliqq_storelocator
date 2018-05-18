@@ -199,7 +199,9 @@ class Map extends Component {
             markerObj.setAnimation(google.maps.Animation.BOUNCE);
             if(lastClickedMarker){
                 let lcMObj = this.getMarker(lastClickedMarker);
-                lcMObj.setAnimation(null);
+                if(lcMObj){
+                    lcMObj.setAnimation(null);
+                }
                 this.setState({lastClickedMarker: marker});
             } else {
                 this.setState({lastClickedMarker: marker});
