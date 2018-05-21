@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Map from '../components/map';
+import Map from '../containers/map';
 import { GoogleApiWrapper } from 'google-maps-react'
 const GMAPS_API_KEY='AIzaSyDk46zyo3PyWCtpQkSUpTAJHbZoiQikF9A';
 
