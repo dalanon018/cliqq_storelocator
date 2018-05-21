@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import seven_eleven_logo from "./header3.png";
 import "./App.css";
 import SearchBar from "./containers/search_bar";
-import MapContainer from "./containers/map_container";
+import MapContainer from "./components/map_container";
 import StoreList from "./containers/store_list";
 import queryString from "query-string";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";

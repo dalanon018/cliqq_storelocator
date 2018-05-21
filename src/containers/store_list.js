@@ -8,7 +8,6 @@ import StoreButton from "../components/storeButton";
 import StoreListItem from "../components/store_list_item";
 import scrollIntoView from "scroll-into-view";
 import NavigationModal from "../components/navigation_modal";
-import NavigationPrompt from "react-router-navigation-prompt";
 import ReactModal from "react-modal";
 import { scrollToStore } from "../actions/scrollToStore";
 
@@ -22,7 +21,8 @@ class StoreList extends Component {
             selectedStore: '',
             modalShown: false,
             selectedStoreNumber: '',
-            selectedStoreName:''
+            selectedStoreName:'',
+            selectedStoreAddress:''
         };
         this.callZoomToStore = this.callZoomToStore.bind(this);
         this.backToTop = this.backToTop.bind(this);
@@ -51,7 +51,7 @@ class StoreList extends Component {
     }
 
     componentDidMount() {
-        console.log("Store List mounted. [props]: ", this.props);
+        // console.log("Store List mounted. [props]: ", this.props);
         this.setState((prevState, props) => ({
             showStoreButton: this.props.callbackUrl ? true : false,
         }));
@@ -59,19 +59,29 @@ class StoreList extends Component {
     }
 
     sendToCallbackUrl= () => (event) => {
+        const { paramMap, callbackUrl } = this.props;
+      
         console.log("Returning to ", callbackUrl);
         // console.log("Stopping Propagation!");
         event.stopPropagation();
-        const { paramMap, callbackUrl } = this.props;
         const { selectedStoreNumber, selectedStoreName } = this.state;
         let paymentType = paramMap.modePayment ? paramMap.modePayment : 'cod'
-        console.info("Mode of Payment is : ", paymentType);
-        console.info("Returning  of Payment is : ", paymentType);
-        this.toggleModal();
-        return window.location.replace(
-            `${callbackUrl}?type=${paymentType}&storeId=${selectedStoreNumber}&storeName=${selectedStoreName}`
-        );
-    };
+
+        // this.toggleModal();
+        let extendedUrlParam = paramMap.orderId ? "&orderId="+paramMap.orderId+"&term_maps" : null
+        if(extendedUrlParam){
+            console.log("Extended Url!: ", `${callbackUrl}?type=${paymentType}&storeId=${selectedStoreNumber}&storeName=${selectedStoreName}`+extendedUrlParam)
+            // return window.location.replace(
+            //     `${callbackUrl}?type=${paymentType}&storeId=${selectedStoreNumber}&storeName=${selectedStoreName}`+extendedUrlParam
+            // );
+        }
+        else {
+            console.info("Normal url");
+            // return window.location.replace(
+            //     `${callbackUrl}?type=${paymentType}&storeId=${selectedStoreNumber}&storeName=${selectedStoreName}`
+            // );
+        } 
+    }
 
     callZoomToStore = (individualStoreData) => (event) => {
         console.log("Store List callZoomToStore: ", individualStoreData.STORE_NAME);
@@ -119,7 +129,7 @@ class StoreList extends Component {
                 storeNum={storeData.STORE_NUM}
                 storeName={storeData.STORE_NAME}
                 handleClick={ (event) => {
-                        this.toggleModal(storeData.STORE_NUM, storeData.STORE_NAME)
+                        this.toggleModal(storeData.STORE_NUM, storeData.STORE_NAME, storeData.ADDRESS)
                     }
                 }
             />
@@ -182,12 +192,12 @@ class StoreList extends Component {
         });
     }
 
-    toggleModal = (storeNumber, storeName) => {
-        this.props.setIsBlockingTrue(true);
+    toggleModal = (storeNumber, storeName, address) => {
         this.setState({ 
             modalShown: true,
             selectedStoreNumber: storeNumber,
-            selectedStoreName: storeName
+            selectedStoreName: storeName,
+            selectedStoreAddress: address
         });
     }
 
@@ -255,29 +265,23 @@ class StoreList extends Component {
                         shouldCloseOnEsc={false}
                         shouldCloseOnOverlayClick={false}
                         shouldFocusAfterRender={true}
+                        className="confirm-modal"
                     >
-                        <p>Are you sure you want to select this store?</p>
-                        <button 
-                            className="btn btn-secondary" 
-                            onClick={this.handleCloseModal}
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            className="btn btn-primary"
-                            onClick= { (event) => {
-                                    this.sendToCallbackUrl()(event)
-                                }    
+                        <NavigationModal
+                            selectedStoreName={this.state.selectedStoreName}
+                            selectedStoreAddress={this.state.selectedStoreAddress}
+                            handleCloseModal={ this.handleCloseModal }
+                            sendToCallbackUrl= { (event) => {
+                                this.sendToCallbackUrl()(event) }
                             }
-                        >
-                            Confirm
-                        </button>
+                        />
+
                     </ReactModal>
                     <h4 className="h4">{completeHolderText}</h4>
                     <span onClick={this.backToTop}>Back to Top</span>
 
                     <div>
-                        <ul className="lithis.st-group storeList">
+                        <ul className="list-group storeList">
                             {stores.map((storeData, idx) =>
                                 this.renderStore(storeData)
                             )}
