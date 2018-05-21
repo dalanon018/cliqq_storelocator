@@ -22,7 +22,7 @@ class StoreListItem extends Component {
     }
 
     render(){
-        const { storeData, storeNum, storeName, address, regionName, telephone } = this.props;
+        const { storeNum, storeName, address, regionName, telephone } = this.props;
         const scrollToListItem = this.props.storeScroll
         const isSelectedStore = scrollToListItem && scrollToListItem[0] && scrollToListItem[0] === storeNum ? true : false
         // console.log("is selectedStore?? : ", isSelectedStore);
