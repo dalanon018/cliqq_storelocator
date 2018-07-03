@@ -77,10 +77,10 @@ class StoreList extends Component {
         }
         else {
             console.info("Normal url");
-            // return window.location = (
-            //     `${callbackUrl}?type=${paymentType}&storeId=${selectedStoreNumber}&storeName=${selectedStoreName}`
-            // );
-            window.location.replace('${callbackUrl}?type=${paymentType}&storeId=${selectedStoreNumber}&storeName=${selectedStoreName}')
+            return window.location = (
+                `${callbackUrl}?type=${paymentType}&storeId=${selectedStoreNumber}&storeName=${selectedStoreName}`
+            );
+            // window.location.replace('${callbackUrl}?type=${paymentType}&storeId=${selectedStoreNumber}&storeName=${selectedStoreName}')
         }
     }
 
