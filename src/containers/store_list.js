@@ -80,7 +80,8 @@ class StoreList extends Component {
             // return window.location = (
             //     `${callbackUrl}?type=${paymentType}&storeId=${selectedStoreNumber}&storeName=${selectedStoreName}`
             // );
-            window.location = 'https://www.google.com'
+            console.info("Test");
+            window.location.replace('https://www.google.com');
         }
     }
 
