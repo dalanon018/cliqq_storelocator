@@ -21,7 +21,7 @@ class Map extends Component {
             this.loadMap();
         }
         if (prevProps.storeList !== this.props.storeList
-            // && prevProps.storeList[0] !== this.props.storeList[0] 
+            // && prevProps.storeList[0] !== this.props.storeList[0]
             // && prevProps.storeList[1] !== this.props.storeList[1]
             ) {
                 this.updateMap();
@@ -85,7 +85,7 @@ class Map extends Component {
         })
 
         if(filteredMarkers){
-            return filteredMarkers[0]        
+            return filteredMarkers[0]
         }
     }
 
@@ -122,7 +122,7 @@ class Map extends Component {
         this.map.setZoom(19);
         this.map.panTo(marker.getPosition());
         console.log("Scroll to Selected Store hook");
-        
+
     }
 
     scrollToSelectedStore(storeId) {
@@ -151,7 +151,7 @@ class Map extends Component {
         if (stores) {
             let currentMapMarkers = stores.map((storeData, idx) => {
                 // console.log('Generating marker for ', location);
-            
+
                 const marker = new google.maps.Marker({
                     position: {
                         lat: parseFloat(storeData.LATITUDE),
@@ -176,7 +176,7 @@ class Map extends Component {
             this.setState({ markers: currentMapMarkers });
         }
     }
-   
+
     addMarkerClickListener(marker, self) {
         // console.log('adding click listener for the marker: ', marker);
         // const { google } = this.props;
@@ -186,7 +186,7 @@ class Map extends Component {
             self.toggleMarkerBounce(marker.get("store_id"));
             self.scrollToSelectedStore(marker.get("store_id"));
         });
-        
+
     }
 
     toggleMarkerBounce = (marker) => {
@@ -205,7 +205,7 @@ class Map extends Component {
                 this.setState({lastClickedMarker: marker});
             } else {
                 this.setState({lastClickedMarker: marker});
-            }        
+            }
         }
 
     }
@@ -219,7 +219,7 @@ class Map extends Component {
 
             this.setState({ markers: [] });
         }
-        
+
     }
 
     loadMap() {

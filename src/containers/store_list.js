@@ -30,11 +30,11 @@ class StoreList extends Component {
         this.storeLists = [];
         this._nodes = new Map();
         this.handleCloseModal = this.handleCloseModal.bind(this);
-        
+
     }
 
     componentDidUpdate(prevProps, prevState) {
-        
+
         if(prevProps.storeScroll !== this.props.storeScroll){
             this.scrollToSelectedStore();
         }
@@ -60,7 +60,7 @@ class StoreList extends Component {
 
     sendToCallbackUrl= () => (event) => {
         const { paramMap, callbackUrl } = this.props;
-      
+
         console.log("Returning to ", callbackUrl);
         // console.log("Stopping Propagation!");
         event.stopPropagation();
@@ -71,16 +71,17 @@ class StoreList extends Component {
         let extendedUrlParam = paramMap.orderId ? "&orderId="+paramMap.orderId+"&term_maps" : null
         if(extendedUrlParam){
             console.log("Extended Url!: ", `${callbackUrl}?type=${paymentType}&storeId=${selectedStoreNumber}&storeName=${selectedStoreName}`+extendedUrlParam)
-            // return window.location.replace(
-            //     `${callbackUrl}?type=${paymentType}&storeId=${selectedStoreNumber}&storeName=${selectedStoreName}`+extendedUrlParam
-            // );
+            return window.location.replace(
+                `${callbackUrl}?type=${paymentType}&storeId=${selectedStoreNumber}&storeName=${selectedStoreName}`+extendedUrlParam
+            );
         }
         else {
             console.info("Normal url");
-            // return window.location.replace(
+            // return window.location = (
             //     `${callbackUrl}?type=${paymentType}&storeId=${selectedStoreNumber}&storeName=${selectedStoreName}`
             // );
-        } 
+            return window.location = 'https://www.google.com'
+        }
     }
 
     callZoomToStore = (individualStoreData) => (event) => {
@@ -91,13 +92,13 @@ class StoreList extends Component {
         this.setState({
             selectedStore: individualStoreData.STORE_NUM
         })
-        
+
     }
 
     scrollToSelectedStore = () => {
         console.log("Scrolling to the selected store!: ", this.props.storeScroll);
-        const { storeScroll } = this.props; 
-        
+        const { storeScroll } = this.props;
+
         let _storeRef = storeScroll[0];
         console.log("Current store list: ", this._nodes);
 
@@ -107,17 +108,17 @@ class StoreList extends Component {
             const selectedNode = ReactDOM.findDOMNode(node);
             selectedNode.setAttribute('selectedStore', _storeRef);
             selectedNode.scrollIntoView({block: 'center', behavior: 'auto'});
-            
+
             scrollIntoView(selectedNode,{
                 time:0,
                 align: {
                     top: 0
                 }
             } )
-            
-            selectedNode.click();           
+
+            selectedNode.click();
         }
-    }   
+    }
 
     renderStore(storeData) {
         // console.log("storeData : ", storeData);
@@ -146,7 +147,7 @@ class StoreList extends Component {
                 <div
                     ref={ (element) => { this._nodes.set(storeData.STORE_NUM, element)}}
                 >
-                    <StoreListItem 
+                    <StoreListItem
                         storeName={storeData.STORE_NAME}
                         storeNum={storeData.STORE_NUM}
                         address={storeData.ADDRESS}
@@ -158,7 +159,7 @@ class StoreList extends Component {
                         handleZoomToStore={ this.callZoomToStore(storeData) }
                     />
                 </div>
-                <div className="col-12" > 
+                <div className="col-12" >
                     { showButton }
                 </div>
             </li>
@@ -193,7 +194,7 @@ class StoreList extends Component {
     }
 
     toggleModal = (storeNumber, storeName, address) => {
-        this.setState({ 
+        this.setState({
             modalShown: true,
             selectedStoreNumber: storeNumber,
             selectedStoreName: storeName,
@@ -253,7 +254,7 @@ class StoreList extends Component {
                         {
                             ({onConfirm, onCancel}) => (
                                 <NavigationModal
-                                    when={this.props.isBlocking} onCancel={onCancel} onConfirm={onConfirm}    
+                                    when={this.props.isBlocking} onCancel={onCancel} onConfirm={onConfirm}
                                 />
                             )
                         }
@@ -290,7 +291,7 @@ class StoreList extends Component {
 
 
                 </div>
-               
+
             );
         }
 
