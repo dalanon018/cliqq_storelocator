@@ -3,26 +3,26 @@ import React, { Component } from 'react';
 class NavigationModal extends Component {
     render(){
         return (
-            <div className="modal-content" data-backdrop="static" data-keyboard="false">
+            <div className="modal-content" data-backdrop="static" data-keyboard="false" styles="z-index:999;">
                 <div className="modal-body">
                     <p>Proceed with this store?</p>
                     <h5>
                         { this.props.selectedStoreName }
                     </h5>
-                    
-                    { this.props.selectedStoreAddress }    
+
+                    { this.props.selectedStoreAddress }
                 </div>
                 <div className="modal-footer">
-                    <button 
-                        className="btn btn-secondary" 
+                    <button
+                        className="btn btn-secondary"
                         onClick={this.props.handleCloseModal}
                     >
                         Cancel
                     </button>
                     <button
                         className="btn btn-primary"
-                        onClick= { 
-                            this.props.sendToCallbackUrl  
+                        onClick= {
+                            this.props.sendToCallbackUrl
                         }
                     >
                     Confirm
@@ -30,7 +30,7 @@ class NavigationModal extends Component {
                 </div>
             </div>
         )
-    }    
-}    
+    }
+}
 
 export default NavigationModal;

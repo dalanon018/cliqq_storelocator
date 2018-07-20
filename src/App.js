@@ -6,8 +6,8 @@ import SearchBar from "./containers/search_bar";
 import MapContainer from "./components/map_container";
 import StoreList from "./containers/store_list";
 import queryString from "query-string";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import CliqqMerchantForm from "./components/cliqqapp-merchant-form"
+import { BrowserRouter as Router } from "react-router-dom";
+//import CliqqMerchantForm from "./components/cliqqapp-merchant-form"
 class App extends Component {
     constructor(props) {
         super(props);
@@ -37,7 +37,7 @@ class App extends Component {
             console.log("Callback URL given: ", paramMap.callbackUrl);
             console.log("Submitted Flag given: ", paramMap.submitted);
             console.log("modePayment Flag given: ", paramMap.modePayment);
-            
+
             this.setState({
                 mobileNumber: paramMap.mobileNumber,
                 callbackUrl: paramMap.callbackUrl,
@@ -74,8 +74,8 @@ class App extends Component {
                             </div>
 
                             <div className="d-none d-sm-block">
-                                <StoreList 
-                                    callbackUrl={callbackUrl} 
+                                <StoreList
+                                    callbackUrl={callbackUrl}
                                     paramMap={paramMap}
                                 />
                             </div>
@@ -84,16 +84,16 @@ class App extends Component {
                             <MapContainer />
                         </div>
                         <div className="d-block d-sm-none order-xs-3">
-                            <StoreList 
-                                callbackUrl={callbackUrl} 
-                                showBackToTopButton="true" 
+                            <StoreList
+                                callbackUrl={callbackUrl}
+                                showBackToTopButton="true"
                                 paramMap={paramMap}
                             />
                         </div>
                     </div>
                 </div>
             </Router>
-            
+
         );
     }
 }
