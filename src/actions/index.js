@@ -23,16 +23,16 @@ export async function fetchStores(searchTerm) {
       term: searchTerm
     }})
     console.log('request1 ' + request1.data.length)
-    if(request1.data.length > 1){
+    if(request1.data.length == 1){
       request = await axios.post(
      		STORE_LIST_URL,
-     		generateFetchStoreFormData(searchTerm),
+     		generateFetchStoreFormData(request1.data[0].value),
      		config
    	  );
     } else {
       request = await axios.post(
      		STORE_LIST_URL,
-     		generateFetchStoreFormData(request1.data[0].value),
+     		generateFetchStoreFormData(searchTerm),
      		config
    	  );
     }
