@@ -22,8 +22,7 @@ export async function fetchStores(searchTerm) {
     params: {
       term: searchTerm
     }})
-    console.log('request1 ' + request1.data.length)
-    if(request1.data.length == 1){
+    if(request1.data.length === 1){
       request = await axios.post(
      		STORE_LIST_URL,
      		generateFetchStoreFormData(request1.data[0].value),
@@ -76,7 +75,6 @@ export function getStoresByMobile(mobileNumber){
 }
 
 function generateFetchStoreFormData(searchTerm) {
-  console.log('pumasok sa generateFetchStoreFormData ' + searchTerm)
   let bodyFormData = new FormData();
   var test = bodyFormData.set('location', searchTerm);
   console.log ('test ' + test)
