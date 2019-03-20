@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchStores, getStoresOnCurrentLocation, getStoresByMobile } from "../actions/index";
 import Loader from "react-loader";
+import Papa from 'papaparse';
 
 class SearchBar extends Component {
     constructor(props) {
@@ -25,9 +26,9 @@ class SearchBar extends Component {
             this
         );
         this._onKeyDown = this._onKeyDown.bind(this);
-        // this.handleBlur = this.handleBlur.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
     }
-    
+
     componentDidMount() {
         if(this.props.mobileNumber){
           console.log("Mobile number is setup! retrieving recently visited stores... ", this.props.mobileNumber)
@@ -37,7 +38,7 @@ class SearchBar extends Component {
           console.log("No mobile number given.");
         }
     }
-    
+
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.currentLocation !== this.props.currentLocation) {
@@ -120,15 +121,26 @@ class SearchBar extends Component {
         }
         event.preventDefault(); //prevent default submit form
         // console.log("onFormSubmit sendSearchRequest?: ", this.state.sendSearchRequest)
-        this._fetchStores(this.state.term);        
+
+        // for parsing csv files
+        // var data = Papa.parse("/cliqq_storelocator/src/ecms_stores.csv");
+        // console.log('data ' + data.data)
+        // Parse local CSV file
+        Papa.parse("http://s3.philseven.com/public/ecms_stores.csv", {
+        	download: true,
+        	complete: function(results) {
+        		console.log(results);
+        	}
+        });
+        this._fetchStores(this.state.term);
         // this.props.getSearchTerm(this.state.term);
         // this.setState({'term': ''});
     }
 
     _fetchStores(term){
-        this.setState({ isLoaded: false})        
+        this.setState({ isLoaded: false})
         this.props.fetchStores(term);
-        this.setState({term:''});
+        this.setState({term: ""});
     }
 
     onInputChange(event) {
@@ -137,19 +149,19 @@ class SearchBar extends Component {
     }
 
     _onKeyDown(event){
-        
+
         if(event.keyCode !== 13){
             this.onInputChange(event);
             return;
         } else {
             const errors = this.validateForm(this.state.term);
-            this.onInputChange(event);            
+            this.onInputChange(event);
             event.preventDefault();
             if(errors)
                 console.warn("Cannot fetch stores on empty string")
             else {
-                console.warn("Fetching stores on term: ", this.state.term);                
-                this._fetchStores(this.state.term);                  
+                console.warn("Fetching stores on term: ", this.state.term);
+                this._fetchStores(this.state.term);
             }
         }
     }
@@ -233,7 +245,7 @@ class SearchBar extends Component {
                                     width={5}
                                     corners={1}
                                     color="#078162"
-                                    >                                 
+                                    >
                                     <button
                                         className="btn mt-2 btn-lg btn-success w-100"
                                         disabled={!isEnabled}
@@ -242,8 +254,8 @@ class SearchBar extends Component {
                                         Stores
                                     </button>
                                 </Loader>
-                                
-                                
+
+
                             </div>
                             <div className="col-12 d-block d-sm-none">
                                 <div className="input-group mb-3">
@@ -258,7 +270,7 @@ class SearchBar extends Component {
                                         onInput={this.onInputChange}
                                         value={this.state.term}
                                         onBlur={this.handleBlur("term")}
-                                        onKeyUp={this._onKeyDown }                                        
+                                        onKeyUp={this._onKeyDown }
                                     />
                                     <div className="input-group-append">
                                         <button
