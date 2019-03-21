@@ -3,12 +3,15 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchStores, getStoresOnCurrentLocation, getStoresByMobile } from "../actions/index";
 import Loader from "react-loader";
-import Papa from 'https://github.com/mholt/PapaParse/blob/master/papaparse.min.js';
+import Papa from 'papaparse';
 
 class SearchBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            data: [],
+            storekeys: [],
+            storeaddress: [],
             term: "",
             locationText: "Use My Location",
             touched: {
@@ -27,6 +30,8 @@ class SearchBar extends Component {
         );
         this._onKeyDown = this._onKeyDown.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
+        //this.parseCSV = this.parseCSV.bind(this);
+        this.updateData = this.updateData.bind(this);
     }
 
     componentDidMount() {
@@ -37,6 +42,7 @@ class SearchBar extends Component {
         } else {
           console.log("No mobile number given.");
         }
+        this.parseCSV("http://s3.philseven.com/public/ecms_stores.csv", this.updateData);
     }
 
 
@@ -125,22 +131,70 @@ class SearchBar extends Component {
         // for parsing csv files
         // var data = Papa.parse("/cliqq_storelocator/src/ecms_stores.csv");
         // console.log('data ' + data.data)
-        // Parse local CSV file
-        Papa.parse("http://s3.philseven.com/public/ecms_stores.csv", {
-        	download: true,
-        	complete: function(results) {
-        		console.log(results);
-        	}
-        });
         this._fetchStores(this.state.term);
         // this.props.getSearchTerm(this.state.term);
         // this.setState({'term': ''});
     }
 
     _fetchStores(term){
+        let storekeyProp = this.state.storekeys
+        let searchFlag = 0
+        //console.log('storekeyProp ' + storekeyProp)
         this.setState({ isLoaded: false})
-        this.props.fetchStores(term);
+        if(parseInt(term, 10)){
+          let storeNum = parseInt(term, 10)
+          console.log('storeNum ' + storeNum)
+          this.parseCSV();
+          //console.log(storekeyProp.some(elem => elem.includes(storeNum)))
+          for(let i=0; i<storekeyProp.length; i++){
+            if(storekeyProp[i] == storeNum){
+              this.props.fetchStores(this.state.storeaddress[i]);
+              //this.setState({ term: this.state.storeaddress[i] })
+              searchFlag = 1;
+            }
+            if((i+1) == storekeyProp.length && searchFlag == 0){
+              this.props.fetchStores(term)
+            }
+          }
+        } else {
+          this.props.fetchStores(term);
+        }
         this.setState({term: ""});
+    }
+
+    parseCSV(){
+      // Parse CSV file
+      // Papa.parse("http://s3.philseven.com/public/ecms_stores.csv", {
+      Papa.parse("http://s3.philseven.com/public/ecms_stores.csv", {
+          download: true,
+          header: true,
+          skipEmptyLines: true,
+          complete: this.updateData
+      });
+
+    }
+
+    // for (let i=0; i<results.data.length; i++){
+    //   if(parseInt(termProp, 10) == results.data[i].store_key){
+    //     // termProp = results.data[i].address
+    //     termProp = results.data[i].address;
+    //     console.log('termProp ' + termProp)
+    //
+    //   }
+    // }
+    // this.props.fetchStores();
+
+    updateData(results) {
+
+      let storeKeys = []
+      let storeAddress = []
+      for (let i=0; i<results.data.length; i++){
+        //this.setState({ storekeys: results.data[i].store_key })
+        storeKeys.push(results.data[i].store_key)
+        storeAddress.push(results.data[i].address)
+      };
+      this.setState({ storekeys: storeKeys })
+      this.setState({ storeaddress: storeAddress })
     }
 
     onInputChange(event) {
