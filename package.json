@@ -4,9 +4,11 @@
   "private": true,
   "dependencies": {
     "axios": "0.18.0",
+    "babyparse": "0.4.6",
     "google-map-react": "0.34.0",
     "google-maps-react": "1.1.4",
     "lodash": "4.17.5",
+    "papaparse": "^4.6.3",
     "query-string": "5.1.1",
     "react": "^15.6.1",
     "react-aria-modal": "2.12.1",

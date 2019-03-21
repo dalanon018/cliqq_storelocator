@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchStores, getStoresOnCurrentLocation, getStoresByMobile } from "../actions/index";
 import Loader from "react-loader";
-import * as Papa from "papaparse";
+import Papa from "papaparse";
 
 class SearchBar extends Component {
     constructor(props) {
