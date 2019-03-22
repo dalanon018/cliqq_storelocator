@@ -164,11 +164,11 @@ class SearchBar extends Component {
 
     parseCSV(){
       // Parse CSV file
-      Papa.parse("https://s3.philseven.com/public/ecms_stores.csv", {
+      Papa.parse("http://s3.philseven.com/public/ecms_stores.csv", {
       //Papa.parse("https://raw.githubusercontent.com/dalanon018/cliqq_storelocator/test_adrian/src/containers/ecms_stores.csv", {
           download: true,
           header: true,
-          skipEmptyLines: true,
+          // skipEmptyLines: true,
           complete: this.updateData
       });
 
