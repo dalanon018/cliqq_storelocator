@@ -42,7 +42,8 @@ class SearchBar extends Component {
         } else {
           console.log("No mobile number given.");
         }
-        this.parseCSV("http://s3.philseven.com/public/ecms_stores.csv", this.updateData);
+        // this.parseCSV("http://s3.philseven.com/public/ecms_stores.csv", this.updateData);
+        this.parseCSV();
     }
 
 
@@ -144,7 +145,7 @@ class SearchBar extends Component {
         if(parseInt(term, 10)){
           let storeNum = parseInt(term, 10)
           console.log('storeNum ' + storeNum)
-          this.parseCSV();
+          //this.parseCSV();
           //console.log(storekeyProp.some(elem => elem.includes(storeNum)))
           for(let i=0; i<storekeyProp.length; i++){
             if(storekeyProp[i] == storeNum){
