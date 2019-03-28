@@ -266,7 +266,7 @@ class SearchBar extends Component {
                                         <input
                                             id="store_search"
                                             className="pt-4 form-control"
-                                            placeholder="Enter Province or City"
+                                            placeholder="Enter Store Name / Address / Number"
                                             autoFocus=""
                                             type="text"
                                             onInput={this.onInputChange}
@@ -275,7 +275,7 @@ class SearchBar extends Component {
                                             onKeyUp={this._onKeyDown }
                                         />
                                         <label htmlFor="store_search">
-                                            Enter Province or City
+                                            Enter Store Name / Address / Number
                                         </label>
                                         <div
                                             className={
@@ -317,8 +317,8 @@ class SearchBar extends Component {
                                     <input
                                         id="store_search"
                                         className="form-control"
-                                        placeholder="Enter Province or City"
-                                        aria-label="Enter Province or City"
+                                        placeholder="Enter Store Name / Address / Number"
+                                        aria-label="Enter Store Name / Address / Number"
                                         aria-describedby="basic-addon2"
                                         autoFocus=""
                                         type="text"
