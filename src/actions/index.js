@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 export const FETCH_STORE = 'FETCH_STORE';
 export const FETCH_STORE_AROUND_LOCATION = 'FETCH_STORE_AROUND_LOCATION';
 export const FETCH_STORE_FAILED = 'FETCH_STORE_FAILED';
@@ -18,7 +17,9 @@ export async function fetchStores(searchTerm) {
 	//     term: searchTerm
 	// }
   var request
+  console.log('searchTerm ' + searchTerm)
   let request1 = await axios.get('https://mapservice-backend.philseven.com/api/web/v3/locators/dropdowndata', {
+  //let request1 = await axios.get('file:///home/user/Downloads/ecms_stores.xml', {
     params: {
       term: searchTerm
     }})
