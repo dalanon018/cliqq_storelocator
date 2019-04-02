@@ -327,7 +327,7 @@ class SearchBar extends Component {
                                         onBlur={this.handleBlur("term")}
                                         onKeyUp={this._onKeyDown }
                                     />
-                                    <div className="input-group mb-3">
+                                  <div className="input-group mt-3 mb-3">
                                         <button
                                             className="btn m-0 btn-lg btn-success w-100"
                                             onClick={

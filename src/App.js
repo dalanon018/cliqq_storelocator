@@ -80,17 +80,16 @@ class App extends Component {
                                 />
                             </div>
                         </div>
-                        <div className="d-block d-sm-none order-xs-3">
-                            <StoreList
-                                callbackUrl={callbackUrl}
-                                showBackToTopButton="true"
-                                paramMap={paramMap}
-                            />
-                        </div>
-                        <div className="col-md-9 col-xs-12 order-xs-2">
-                            <MapContainer />
-                        </div>
-
+                      <div className="col-md-9 col-xs-12 order-xs-3 order-3">
+                          <MapContainer />
+                      </div>
+                      <div className="d-block d-sm-none order-xs-2 order-2">
+                        <StoreList
+                            callbackUrl={callbackUrl}
+                            showBackToTopButton="true"
+                            paramMap={paramMap}
+                        />
+                    </div>
                     </div>
                 </div>
             </Router>
