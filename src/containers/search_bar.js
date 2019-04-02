@@ -327,7 +327,7 @@ class SearchBar extends Component {
                                         onBlur={this.handleBlur("term")}
                                         onKeyUp={this._onKeyDown }
                                     />
-                                    <div className="input-group-append">
+                                    <div className="input-group mb-3">
                                         <button
                                             className="btn m-0 btn-lg btn-success w-100"
                                             onClick={
@@ -335,15 +335,17 @@ class SearchBar extends Component {
                                             }
                                             type="button"
                                         >
-                                            <i className="fas fa-location-arrow" />
+                                            <i className="fas fa-location-arrow" />{" "}
+                                            {this.state.locationText}
                                         </button>
                                         <button
                                             // className="btn btn-outline-secondary"
-                                            className="btn btn-lg btn-success"
+                                            className="btn mt-2 btn-lg btn-success w-100"
                                             type="submit"
                                             disabled={!isEnabled}
                                         >
-                                            <i className="fas fa-search" />
+                                            <i className="fas fa-search" /> &nbsp; Find
+                                            Stores
                                         </button>
                                     </div>
                                 </div>
