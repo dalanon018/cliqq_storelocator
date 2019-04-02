@@ -329,7 +329,7 @@ class SearchBar extends Component {
                                     />
                                   <div className="input-group mt-3 mb-3">
                                         <button
-                                            className="btn m-0 btn-md btn-success w-100"
+                                            className="btn m-0 btn-sm btn-success w-100"
                                             onClick={
                                                 this.getStoresOnCurrentLocation
                                             }
@@ -340,7 +340,7 @@ class SearchBar extends Component {
                                         </button>
                                         <button
                                             // className="btn btn-outline-secondary"
-                                            className="btn mt-2 btn-md btn-success w-100"
+                                            className="btn mt-2 btn-sm btn-success w-100"
                                             type="submit"
                                             disabled={!isEnabled}
                                         >
