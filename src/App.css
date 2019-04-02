@@ -261,7 +261,7 @@ body {
 @media (max-width: 767px) {
     .mapDimensions {
         display: block;
-        max-height: 40vh;
+        max-height: 30vh;
         width: 100%;
     }
 }
