@@ -237,7 +237,7 @@ class SearchBar extends Component {
             <div className="main_search">
                 <div className="row clearfix">
                     <div className="col-12">
-                        <h3 className="h3 text-left">Find a 7-Eleven Store</h3>
+                        <h3 className="h5 text-left">Find a 7-Eleven Store</h3>
                     </div>
                     <div className="col-12 pl-0 pr-0 d-none d-sm-block">
                         <div className="col-12 pl-0 pr-0">
@@ -329,7 +329,7 @@ class SearchBar extends Component {
                                     />
                                   <div className="input-group mt-3 mb-3">
                                         <button
-                                            className="btn m-0 btn-lg btn-success w-100"
+                                            className="btn m-0 btn-md btn-success w-100"
                                             onClick={
                                                 this.getStoresOnCurrentLocation
                                             }
@@ -340,7 +340,7 @@ class SearchBar extends Component {
                                         </button>
                                         <button
                                             // className="btn btn-outline-secondary"
-                                            className="btn mt-2 btn-lg btn-success w-100"
+                                            className="btn mt-2 btn-md btn-success w-100"
                                             type="submit"
                                             disabled={!isEnabled}
                                         >
