@@ -278,7 +278,7 @@ class StoreList extends Component {
                         />
 
                     </ReactModal>
-                    <h4 className="h4">{completeHolderText}</h4>
+                    <h4 className="h6">{completeHolderText}</h4>
                     <span onClick={this.backToTop}>Back to Top</span>
 
                     <div>
