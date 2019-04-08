@@ -257,7 +257,7 @@ class Map extends Component {
                             elementType: "labels.text.fill",
                             stylers: [
                                 {
-                                    color: "#ffffff"
+                                    color: "#000000"
                                 }
                             ]
                         },
@@ -266,7 +266,10 @@ class Map extends Component {
                             elementType: "labels.text.stroke",
                             stylers: [
                                 {
-                                    color: "#005338"
+                                    color: "#000000"
+                                },
+                                {
+                                    visibility: "off"
                                 }
                             ]
                         },
@@ -275,7 +278,7 @@ class Map extends Component {
                             elementType: "labels.text.fill",
                             stylers: [
                                 {
-                                    color: "#ffffff"
+                                    color: "#000000"
                                 }
                             ]
                         },
@@ -284,7 +287,10 @@ class Map extends Component {
                             elementType: "labels.text.stroke",
                             stylers: [
                                 {
-                                    color: "#005338"
+                                    color: "#ffffff"
+                                },
+                                {
+                                    visibility: "off"
                                 }
                             ]
                         },
@@ -310,7 +316,7 @@ class Map extends Component {
                             elementType: "geometry.fill",
                             stylers: [
                                 {
-                                    color: "#000000"
+                                    color: "#A5E186"
                                 },
                                 {
                                     visibility: "on"
@@ -385,7 +391,7 @@ class Map extends Component {
                                     color: "#005338"
                                 },
                                 {
-                                    visibility: "on"
+                                    visibility: "off"
                                 },
                                 {
                                     weight: 3.5
