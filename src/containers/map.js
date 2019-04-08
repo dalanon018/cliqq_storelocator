@@ -310,7 +310,7 @@ class Map extends Component {
                             elementType: "geometry.fill",
                             stylers: [
                                 {
-                                    color: "#005338"
+                                    color: "#000000"
                                 },
                                 {
                                     visibility: "on"
