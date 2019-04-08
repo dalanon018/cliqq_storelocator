@@ -398,6 +398,9 @@ class Map extends Component {
                             stylers: [
                                 {
                                     color: "#ffeb3b"
+                                },
+                                {
+                                    visibility: "off"
                                 }
                             ]
                         }
